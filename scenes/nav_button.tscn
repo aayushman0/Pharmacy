@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://bci0uw5my327t"]
+
+[ext_resource type="Script" uid="uid://clbxyt427v0l4" path="res://scripts/nav_button.gd" id="1_3m58a"]
+
+[node name="NavButton" type="Control" unique_id=2025707021 groups=["NavButtons"]]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 0
+script = ExtResource("1_3m58a")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1245732807]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.13725491, 0.13725491, 0.13725491, 1)
+
+[node name="Active" type="ColorRect" parent="." unique_id=609523545]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.019607844, 0.33333334, 0.70980394, 1)
+
+[node name="Label" type="Label" parent="." unique_id=1336121340]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -25.0
+offset_bottom = 25.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="Icon" type="TextureRect" parent="." unique_id=1821203164]
+layout_mode = 0
+offset_left = 10.0
+offset_right = 60.0
+offset_bottom = 50.0
+scale = Vector2(0.6, 0.6)
+pivot_offset = Vector2(25, 25)
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

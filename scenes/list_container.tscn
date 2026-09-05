@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://dt6jfjiu6t3re"]
+
+[ext_resource type="Script" uid="uid://drnqbkqrv3rlw" path="res://scripts/list_container.gd" id="1_xvgph"]
+
+[node name="ListContainer" type="VBoxContainer" unique_id=2119790950]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xvgph")
+
+[node name="FilterContainer" type="HBoxContainer" parent="." unique_id=529617364]
+layout_mode = 2
+
+[node name="TypeLabel" type="Label" parent="FilterContainer" unique_id=2086534476]
+layout_mode = 2
+text = "Type: "
+
+[node name="TypeFilter" type="OptionButton" parent="FilterContainer" unique_id=1984820194]
+custom_minimum_size = Vector2(150, 0)
+custom_maximum_size = Vector2(150, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 11
+popup/item_0/text = "All"
+popup/item_0/id = 0
+popup/item_1/text = "Tablet"
+popup/item_1/id = 1
+popup/item_2/text = "Capsule"
+popup/item_2/id = 2
+popup/item_3/text = "Syrup"
+popup/item_3/id = 3
+popup/item_4/text = "Drops"
+popup/item_4/id = 4
+popup/item_5/text = "Ointment"
+popup/item_5/id = 5
+popup/item_6/text = "Cream"
+popup/item_6/id = 6
+popup/item_7/text = "Gel"
+popup/item_7/id = 7
+popup/item_8/text = "Powder"
+popup/item_8/id = 8
+popup/item_9/text = "Injection"
+popup/item_9/id = 9
+popup/item_10/text = "Other"
+popup/item_10/id = 10
+
+[node name="NameLabel" type="Label" parent="FilterContainer" unique_id=243096909]
+layout_mode = 2
+text = "Name: "
+
+[node name="NameFilter" type="LineEdit" parent="FilterContainer" unique_id=24316830]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ShelfLabel" type="Label" parent="FilterContainer" unique_id=78657752]
+layout_mode = 2
+text = "Shelf: "
+
+[node name="ShelfFilter" type="LineEdit" parent="FilterContainer" unique_id=1088469256]
+custom_maximum_size = Vector2(60, -1)
+layout_mode = 2
+
+[node name="DistributorLabel" type="Label" parent="FilterContainer" unique_id=1980558462]
+layout_mode = 2
+text = "Distributor: "
+
+[node name="DistributorFilter" type="LineEdit" parent="FilterContainer" unique_id=1698439131]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+
+[node name="Table" type="Tree" parent="." unique_id=1068465050]
+layout_mode = 2
+size_flags_vertical = 3
+allow_search = false
+hide_folding = true
+select_mode = 1
+
+[connection signal="item_selected" from="FilterContainer/TypeFilter" to="." method="refresh"]
+[connection signal="text_changed" from="FilterContainer/NameFilter" to="." method="refresh"]
+[connection signal="text_changed" from="FilterContainer/ShelfFilter" to="." method="refresh"]
+[connection signal="text_changed" from="FilterContainer/DistributorFilter" to="." method="refresh"]

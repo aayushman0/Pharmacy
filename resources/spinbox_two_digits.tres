@@ -1,0 +1,5 @@
+[gd_resource type="Theme" format=3 uid="uid://dgmor5l6q0ea0"]
+
+[resource]
+LineEdit/constants/minimum_character_width = 2
+SpinBox/constants/field_and_buttons_separation = 0

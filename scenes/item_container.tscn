@@ -1,0 +1,145 @@
+[gd_scene format=3 uid="uid://daf3h5jlgi0xu"]
+
+[ext_resource type="Script" uid="uid://3f40oop2f7vi" path="res://scripts/item_container.gd" id="1_n11ee"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n11ee"]
+bg_color = Color(0.06666667, 0.46666667, 0.06666667, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2umob"]
+bg_color = Color(0.13333334, 0.53333336, 0.13333334, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="ItemContainer" type="VBoxContainer" unique_id=329308220]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 204.0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+script = ExtResource("1_n11ee")
+
+[node name="NameContainer" type="HBoxContainer" parent="." unique_id=1716466968]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NameContainer" unique_id=2099568014]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Name: "
+
+[node name="Name" type="LineEdit" parent="NameContainer" unique_id=1135685212]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TypeContainer" type="HBoxContainer" parent="." unique_id=1282301873]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TypeContainer" unique_id=2134075423]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Type: "
+
+[node name="Type" type="OptionButton" parent="TypeContainer" unique_id=262394072]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 10
+popup/item_0/text = "Tablet"
+popup/item_0/id = 0
+popup/item_1/text = "Capsule"
+popup/item_1/id = 1
+popup/item_2/text = "Syrup"
+popup/item_2/id = 2
+popup/item_3/text = "Drops"
+popup/item_3/id = 3
+popup/item_4/text = "Ointment"
+popup/item_4/id = 4
+popup/item_5/text = "Cream"
+popup/item_5/id = 5
+popup/item_6/text = "Gel"
+popup/item_6/id = 6
+popup/item_7/text = "Powder"
+popup/item_7/id = 7
+popup/item_8/text = "Injection"
+popup/item_8/id = 8
+popup/item_9/text = "Other"
+popup/item_9/id = 9
+
+[node name="PriceContainer" type="HBoxContainer" parent="." unique_id=710986191]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PriceContainer" unique_id=1502606423]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Price: "
+
+[node name="Price" type="SpinBox" parent="PriceContainer" unique_id=974810858]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100000000.0
+alignment = 2
+prefix = "Rs. "
+select_all_on_focus = true
+
+[node name="Seperator" type="Label" parent="PriceContainer" unique_id=1046818633]
+layout_mode = 2
+text = "/"
+
+[node name="Unit" type="SpinBox" parent="PriceContainer" unique_id=1820299558]
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 1.0
+rounded = true
+select_all_on_focus = true
+
+[node name="BestBeforeContainer" type="HBoxContainer" parent="." unique_id=1138156911]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BestBeforeContainer" unique_id=1815791926]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Best Before: "
+
+[node name="BestBefore" type="SpinBox" parent="BestBeforeContainer" unique_id=1847730091]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 10000.0
+rounded = true
+alignment = 2
+suffix = " Months"
+select_all_on_focus = true
+
+[node name="ShelfContainer" type="HBoxContainer" parent="." unique_id=1485608560]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ShelfContainer" unique_id=294386642]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Shelf: "
+
+[node name="Shelf" type="LineEdit" parent="ShelfContainer" unique_id=1577766779]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SaveToDB" type="Button" parent="." unique_id=1601638284]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_n11ee")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2umob")
+text = "Save"
+
+[node name="StockTable" type="Tree" parent="." unique_id=541712687]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 3
+allow_search = false
+hide_folding = true
+select_mode = 1

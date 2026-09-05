@@ -1,0 +1,161 @@
+[gd_scene format=3 uid="uid://ieksxrxueq0w"]
+
+[ext_resource type="Script" uid="uid://ckn36cidjqhcn" path="res://scripts/stock_container.gd" id="1_s6ttn"]
+[ext_resource type="PackedScene" uid="uid://lulpbgk451t8" path="res://scenes/datetime_container.tscn" id="1_w8fp2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8fp2"]
+bg_color = Color(0.06666667, 0.46666667, 0.06666667, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s6ttn"]
+bg_color = Color(0.13333334, 0.53333336, 0.13333334, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="StockContainer" type="VBoxContainer" unique_id=1438142542]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 173.0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+script = ExtResource("1_s6ttn")
+
+[node name="NameContainer" type="HBoxContainer" parent="." unique_id=1697055749]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NameContainer" unique_id=1204567263]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Name: "
+
+[node name="Name" type="LineEdit" parent="NameContainer" unique_id=1113736968]
+layout_mode = 2
+size_flags_horizontal = 3
+select_all_on_focus = true
+
+[node name="DropDownMenu" type="PopupPanel" parent="NameContainer/Name" unique_id=1616662582]
+oversampling_override = 1.0
+
+[node name="Background" type="ColorRect" parent="NameContainer/Name/DropDownMenu" unique_id=1331570724]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Choices" type="Tree" parent="NameContainer/Name/DropDownMenu" unique_id=1506262070]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 96.0
+allow_search = false
+hide_folding = true
+hide_root = true
+
+[node name="BatchContainer" type="HBoxContainer" parent="." unique_id=335803909]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BatchContainer" unique_id=916403388]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Batch No.: "
+
+[node name="BatchNo" type="LineEdit" parent="BatchContainer" unique_id=1938653316]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="QuantityContainer" type="HBoxContainer" parent="." unique_id=1699816186]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="QuantityContainer" unique_id=642467091]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Quantity: "
+
+[node name="Quantity" type="SpinBox" parent="QuantityContainer" unique_id=223179562]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100000.0
+
+[node name="PriceContainer" type="HBoxContainer" parent="." unique_id=1316001596]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PriceContainer" unique_id=1381166731]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Price: "
+
+[node name="Price" type="SpinBox" parent="PriceContainer" unique_id=395006455]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1000000.0
+prefix = "Rs. "
+
+[node name="Seperator" type="Label" parent="PriceContainer" unique_id=224549238]
+layout_mode = 2
+text = "/"
+
+[node name="Unit" type="SpinBox" parent="PriceContainer" unique_id=1593212247]
+layout_mode = 2
+focus_behavior_recursive = 1
+min_value = 1.0
+max_value = 1000.0
+value = 1.0
+rounded = true
+editable = false
+
+[node name="MfgContainer" parent="." unique_id=717524860 instance=ExtResource("1_w8fp2")]
+layout_mode = 2
+show_time = false
+custom_label = "Mfg Date: "
+
+[node name="ExpContainer" parent="." unique_id=1693610180 instance=ExtResource("1_w8fp2")]
+layout_mode = 2
+show_time = false
+custom_label = "Exp Date: "
+
+[node name="DistributorContainer" type="HBoxContainer" parent="." unique_id=1521003666]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="DistributorContainer" unique_id=1192159862]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Distributor: "
+
+[node name="Distributor" type="LineEdit" parent="DistributorContainer" unique_id=318609681]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SaveToDB" type="Button" parent="." unique_id=1754752472]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_w8fp2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s6ttn")
+text = "Save"
+
+[connection signal="focus_entered" from="NameContainer/Name" to="." method="_on_name_focus_entered"]
+[connection signal="focus_exited" from="NameContainer/Name" to="." method="_on_name_focus_exited"]
+[connection signal="gui_input" from="NameContainer/Name" to="." method="_on_name_gui_input"]
+[connection signal="text_changed" from="NameContainer/Name" to="." method="update_choices"]
+[connection signal="cell_selected" from="NameContainer/Name/DropDownMenu/Choices" to="." method="_on_choices_cell_selected"]
+[connection signal="value_changed" from="MfgContainer/Year" to="." method="update_date"]
+[connection signal="value_changed" from="MfgContainer/Month" to="." method="update_date"]
+
+[editable path="MfgContainer"]

@@ -1,0 +1,109 @@
+extends VBoxContainer
+
+@export_enum("product", "batch") var table_name: String = "product"
+@onready var type_filter: OptionButton = $FilterContainer/TypeFilter
+@onready var name_filter: LineEdit = $FilterContainer/NameFilter
+@onready var shelf_filter: LineEdit = $FilterContainer/ShelfFilter
+@onready var distributor_label: Label = $FilterContainer/DistributorLabel
+@onready var distributor_filter: LineEdit = $FilterContainer/DistributorFilter
+@onready var main_table: Tree = $Table
+@onready var table: TreeItem = main_table.create_item()
+
+
+func _ready() -> void:
+	if table_name == "product":
+		distributor_label.visible = false
+		distributor_filter.visible = false
+		main_table.columns = 6
+		table.set_text(0, "     ID")
+		table.set_text(1, "  Name")
+		table.set_text(2, "Type")
+		table.set_text(3, "Price/Unit ")
+		table.set_text_alignment(3, HORIZONTAL_ALIGNMENT_RIGHT)
+		table.set_text(4, " Best Before")
+		table.set_text(5, "Shelf")
+		main_table.set_column_expand(0, false)
+		main_table.set_column_custom_minimum_width(0, 60)
+		main_table.set_column_expand(2, false)
+		main_table.set_column_custom_minimum_width(2, 100)
+		main_table.set_column_expand(3, false)
+		main_table.set_column_custom_minimum_width(3, 150)
+		main_table.set_column_expand(4, false)
+		main_table.set_column_custom_minimum_width(4, 100)
+		main_table.set_column_expand(5, false)
+		main_table.set_column_custom_minimum_width(5, 100)
+	else:
+		main_table.columns = 8
+		table.set_text(0, "     Name")
+		table.set_text(1, "Batch No.")
+		table.set_text(2, "Price/Unit")
+		table.set_text(3, "Quantity")
+		table.set_text(4, "Expiry ")
+		table.set_text(5, "Shelf ")
+		table.set_text(6, " Distributor")
+		table.set_text(7, "ID")
+		main_table.set_column_custom_minimum_width(0, 150)
+		main_table.set_column_expand(2, false)
+		main_table.set_column_custom_minimum_width(2, 100)
+		main_table.set_column_expand(3, false)
+		main_table.set_column_custom_minimum_width(3, 75)
+		main_table.set_column_expand(4, false)
+		main_table.set_column_custom_minimum_width(4, 65)
+		main_table.set_column_expand(5, false)
+		main_table.set_column_custom_minimum_width(5, 50)
+		main_table.set_column_expand(6, false)
+		main_table.set_column_custom_minimum_width(6, 100)
+		main_table.set_column_expand(7, false)
+		main_table.set_column_custom_minimum_width(7, 0)
+
+		set_column_alignment(table, [2, 3, 4, 5])
+	refresh()
+
+func refresh(_input: Variant = null) -> void:
+	for child in table.get_children():
+		child.free()
+	var filter_query: Array[String] = []
+	var filter_string: String = ""
+	if type_filter.selected > 0:
+		filter_query.append("type = '" + type_filter.get_item_text(type_filter.selected) + "'")
+	if name_filter.text:
+		filter_query.append("code LIKE LOWER('%" + Global.alphanumeric(name_filter.text) + "%')")
+	if shelf_filter.text:
+		filter_query.append("LOWER(shelf) LIKE LOWER('%" + shelf_filter.text + "%')")
+	if distributor_filter.text:
+		filter_query.append("LOWER(distributor) LIKE LOWER('%" + distributor_filter.text + "%')")
+	if table_name == "batch":
+		filter_query.append("quantity > 0")
+	if filter_query:
+		filter_string = "WHERE " + " AND ".join(filter_query)
+	if table_name == "product":
+		Global.db.query("SELECT * FROM product " + filter_string + " ORDER BY id DESC;")
+	else:
+		Global.db.query(
+			"SELECT batch.*, product.name, product.type, product.min_unit, product.shelf FROM batch 
+			INNER JOIN product ON batch.product_id = product.id " + filter_string + " ORDER BY exp_date;"
+		)
+	for row in Global.db.query_result:
+		var rows: TreeItem = main_table.create_item(table)
+		if table_name == "product":
+			rows.set_text(0, str(row.id))
+			rows.set_text(1, "  " + row.name)
+			rows.set_text(2, row.type)
+			rows.set_text(3, "%.2f/%02d " % [row.price, row.min_unit])
+			rows.set_text(4, " " + str(row.best_before))
+			rows.set_text(5, row.shelf)
+			set_column_alignment(rows, [0, 3])
+		else:
+			rows.set_text(0, Global.product_types_dict.get(row.type, "---") + ". " + row.name)
+			rows.set_text(1, row.batch_no)
+			rows.set_text(2, "%.2f/%02d" %[row.price, row.min_unit])
+			rows.set_text(3, str(row.quantity))
+			rows.set_text(4, row.exp_date)
+			rows.set_text(5, row.shelf + " ")
+			rows.set_text(6, " " + row.distributor)
+			rows.set_text(7, str(row.id))
+			set_column_alignment(rows, [2, 3, 4, 5])
+
+func set_column_alignment(row: TreeItem, cols: Array[int]):
+	for i in cols:
+		row.set_text_alignment(i, HORIZONTAL_ALIGNMENT_RIGHT)

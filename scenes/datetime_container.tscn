@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://lulpbgk451t8"]
+
+[ext_resource type="Script" uid="uid://bk3a8reo7f6w2" path="res://scripts/datetime_container.gd" id="1_qdm77"]
+[ext_resource type="Theme" uid="uid://dgmor5l6q0ea0" path="res://resources/spinbox_two_digits.tres" id="2_d50pn"]
+
+[node name="DateTimeContainer" type="HBoxContainer" unique_id=717524860]
+script = ExtResource("1_qdm77")
+
+[node name="Label" type="Label" parent="." unique_id=1240210385]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Date: "
+
+[node name="Year" type="SpinBox" parent="." unique_id=453302929]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+min_value = 2000.0
+max_value = 2999.0
+value = 2000.0
+rounded = true
+alignment = 2
+
+[node name="Month" type="SpinBox" parent="." unique_id=764695428]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_d50pn")
+min_value = 1.0
+max_value = 12.0
+value = 1.0
+rounded = true
+alignment = 2
+select_all_on_focus = true
+
+[node name="Day" type="SpinBox" parent="." unique_id=26810060]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_d50pn")
+min_value = 1.0
+max_value = 32.0
+value = 1.0
+rounded = true
+alignment = 2
+select_all_on_focus = true
+
+[node name="Seperator" type="Label" parent="." unique_id=1263067262]
+layout_mode = 2
+text = " "
+
+[node name="Hour" type="SpinBox" parent="." unique_id=1770708895]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_d50pn")
+max_value = 23.0
+rounded = true
+alignment = 2
+select_all_on_focus = true
+
+[node name="Minute" type="SpinBox" parent="." unique_id=620330641]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_d50pn")
+max_value = 59.0
+rounded = true
+alignment = 2
+select_all_on_focus = true
+
+[connection signal="value_changed" from="Year" to="." method="set_max_day_of_month"]
+[connection signal="value_changed" from="Month" to="." method="set_max_day_of_month"]
