@@ -6,6 +6,7 @@ extends VBoxContainer
 @onready var shelf_filter: LineEdit = $FilterContainer/ShelfFilter
 @onready var distributor_label: Label = $FilterContainer/DistributorLabel
 @onready var distributor_filter: LineEdit = $FilterContainer/DistributorFilter
+@onready var quantity_filter: CheckBox = $FilterContainer/QuantityFilter
 @onready var main_table: Tree = $Table
 @onready var table: TreeItem = main_table.create_item()
 
@@ -14,6 +15,7 @@ func _ready() -> void:
 	if table_name == "product":
 		distributor_label.visible = false
 		distributor_filter.visible = false
+		quantity_filter.visible = false
 		main_table.columns = 6
 		table.set_text(0, "     ID")
 		table.set_text(1, "  Name")
@@ -37,8 +39,8 @@ func _ready() -> void:
 		table.set_text(0, "     Name")
 		table.set_text(1, "Batch No.")
 		table.set_text(2, "Price/Unit")
-		table.set_text(3, "Quantity")
-		table.set_text(4, "Expiry ")
+		table.set_text(3, "Qty ")
+		table.set_text(4, "Expiry  ")
 		table.set_text(5, "Shelf ")
 		table.set_text(6, " Distributor")
 		table.set_text(7, "ID")
@@ -46,9 +48,9 @@ func _ready() -> void:
 		main_table.set_column_expand(2, false)
 		main_table.set_column_custom_minimum_width(2, 100)
 		main_table.set_column_expand(3, false)
-		main_table.set_column_custom_minimum_width(3, 75)
+		main_table.set_column_custom_minimum_width(3, 70)
 		main_table.set_column_expand(4, false)
-		main_table.set_column_custom_minimum_width(4, 65)
+		main_table.set_column_custom_minimum_width(4, 75)
 		main_table.set_column_expand(5, false)
 		main_table.set_column_custom_minimum_width(5, 50)
 		main_table.set_column_expand(6, false)
@@ -73,7 +75,7 @@ func refresh(_input: Variant = null) -> void:
 	if distributor_filter.text:
 		filter_query.append("LOWER(distributor) LIKE LOWER('%" + distributor_filter.text + "%')")
 	if table_name == "batch":
-		filter_query.append("quantity > 0")
+		filter_query.append("quantity <= 0" if quantity_filter.button_pressed else "quantity > 0")
 	if filter_query:
 		filter_string = "WHERE " + " AND ".join(filter_query)
 	if table_name == "product":
@@ -81,7 +83,8 @@ func refresh(_input: Variant = null) -> void:
 	else:
 		Global.db.query(
 			"SELECT batch.*, product.name, product.type, product.min_unit, product.shelf FROM batch 
-			INNER JOIN product ON batch.product_id = product.id " + filter_string + " ORDER BY exp_date;"
+			INNER JOIN product ON batch.product_id = product.id " + filter_string + 
+			(" ORDER BY created_at DESC;" if quantity_filter.button_pressed else " ORDER BY exp_date;")
 		)
 	for row in Global.db.query_result:
 		var rows: TreeItem = main_table.create_item(table)
@@ -97,11 +100,15 @@ func refresh(_input: Variant = null) -> void:
 			rows.set_text(0, Global.product_types_dict.get(row.type, "---") + ". " + row.name)
 			rows.set_text(1, row.batch_no)
 			rows.set_text(2, "%.2f/%02d" %[row.price, row.min_unit])
-			rows.set_text(3, str(row.quantity))
-			rows.set_text(4, row.exp_date)
+			rows.set_text(3, str(row.quantity) + "  ")
+			rows.set_text(4, row.exp_date.substr(0,7))
 			rows.set_text(5, row.shelf + " ")
 			rows.set_text(6, " " + row.distributor)
 			rows.set_text(7, str(row.id))
+			if row.exp_date < Global.dt_now_str:
+				rows.set_custom_color(4, Color.RED)
+			elif row.exp_date < Global.get_future_date(3):
+				rows.set_custom_color(4, Color.ORANGE)
 			set_column_alignment(rows, [2, 3, 4, 5])
 
 func set_column_alignment(row: TreeItem, cols: Array[int]):

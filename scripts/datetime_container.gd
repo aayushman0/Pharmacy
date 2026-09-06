@@ -16,7 +16,9 @@ func _ready() -> void:
 	seperator.visible = show_time
 	hour.visible = show_time
 	minute.visible = show_time
-	if custom_label:
+	if custom_label == "Hide":
+		label.visible = false
+	elif custom_label:
 		label.text = custom_label
 
 func get_max_day_of_month(y: int, m: int) -> int:

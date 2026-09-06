@@ -27,6 +27,15 @@ func alphanumeric(input: String) -> String:
 	regex.compile("[^A-Za-z0-9]")
 	return regex.sub(input, "", true)
 
+func get_future_date(months: int) -> String:
+	var month: int = dt_now.month
+	var year: int = dt_now.year
+	month += months
+	@warning_ignore("integer_division")
+	year += (month - 1) / 12
+	month = (month - 1) % 12 + 1
+	return "%d-%02d-02" % [year, month]
+
 func _ready() -> void:
 	db.path = "res://database.db"
 	db.open_db()
@@ -69,11 +78,12 @@ func _ready() -> void:
 	db.query("CREATE INDEX IF NOT EXISTS ix_batch_batch_no ON batch (batch_no);")
 	db.query("CREATE INDEX IF NOT EXISTS ix_batch_exp_date ON batch (exp_date);")
 	db.query("CREATE INDEX IF NOT EXISTS ix_batch_distributor ON batch (distributor);")
+	db.query("CREATE INDEX IF NOT EXISTS ix_batch_created_at ON batch (created_at);")
 
 	db.query(
 		"CREATE TABLE IF NOT EXISTS product_bill (
 			id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-			customer_name VARCHAR,
+			name VARCHAR,
 			bill VARCHAR,
 			total_amount FLOAT,
 			discount FLOAT,
@@ -87,7 +97,7 @@ func _ready() -> void:
 	db.query(
 		"CREATE TABLE IF NOT EXISTS service_bill (
 			id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-			customer_name VARCHAR,
+			name VARCHAR,
 			bill VARCHAR,
 			total_amount FLOAT,
 			discount FLOAT,

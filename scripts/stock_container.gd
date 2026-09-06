@@ -151,6 +151,7 @@ func update_to_db(batch_id: String) -> void:
 		"mfg_date": mfg_container.get_date_str(),
 		"exp_date": exp_container.get_date_str(),
 		"distributor": stock_distributor.text,
+		"created_at": Global.dt_now_str,
 	})
 
 func update_date(_value: float) -> void:
