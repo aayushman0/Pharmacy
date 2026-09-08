@@ -45,6 +45,14 @@ func update_datetime(dt_str: String) -> void:
 	hour.value = float(dt_arr[1].split(":")[0])
 	minute.value = float(dt_arr[1].split(":")[1])
 
+func update_datetime_no_signal(dt_str: String) -> void:
+	var dt_arr: PackedStringArray = dt_str.split(" ")
+	year.set_value_no_signal(float(dt_arr[0].split("-")[0]))
+	month.set_value_no_signal(float(dt_arr[0].split("-")[1]))
+	day.set_value_no_signal(float(dt_arr[0].split("-")[2]))
+	hour.set_value_no_signal(float(dt_arr[1].split(":")[0]))
+	minute.set_value_no_signal(float(dt_arr[1].split(":")[1]))
+
 func update_date(date_str: String) -> void:
 	var date_arr: PackedStringArray = date_str.split("-")
 	year.value = float(date_arr[0])

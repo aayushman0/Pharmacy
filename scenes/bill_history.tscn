@@ -55,7 +55,7 @@ text = ">>"
 [node name="History" type="Tree" parent="MainContainer/LeftContainer" unique_id=1941466462]
 layout_mode = 2
 size_flags_vertical = 3
-columns = 4
+columns = 5
 allow_search = false
 hide_folding = true
 select_mode = 1
@@ -65,6 +65,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="pressed" from="MainContainer/LeftContainer/FilterContainer/LeftButton" to="." method="_on_left_button_pressed"]
+[connection signal="value_changed" from="MainContainer/LeftContainer/FilterContainer/DateFilter/Year" to="." method="refresh"]
 [connection signal="value_changed" from="MainContainer/LeftContainer/FilterContainer/DateFilter/Month" to="." method="refresh"]
 [connection signal="value_changed" from="MainContainer/LeftContainer/FilterContainer/DateFilter/Day" to="." method="refresh"]
 [connection signal="pressed" from="MainContainer/LeftContainer/FilterContainer/RightButton" to="." method="_on_right_button_pressed"]
