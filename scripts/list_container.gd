@@ -84,7 +84,7 @@ func refresh(_input: Variant = null) -> void:
 		Global.db.query(
 			"SELECT batch.*, product.name, product.type, product.min_unit, product.shelf FROM batch 
 			INNER JOIN product ON batch.product_id = product.id " + filter_string + 
-			(" ORDER BY created_at DESC;" if quantity_filter.button_pressed else " ORDER BY exp_date;")
+			(" ORDER BY batch.id DESC;" if quantity_filter.button_pressed else " ORDER BY exp_date;")
 		)
 	for row in Global.db.query_result:
 		var rows: TreeItem = main_table.create_item(table)

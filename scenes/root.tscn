@@ -9,7 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://4008uykipq8f" path="res://scenes/item.tscn" id="6_j287u"]
 [ext_resource type="PackedScene" uid="uid://da5ts5m13u1rc" path="res://scenes/stock.tscn" id="7_5sfjl"]
 [ext_resource type="PackedScene" uid="uid://bo6lfatk7i7h6" path="res://scenes/bill.tscn" id="9_7pvxh"]
+[ext_resource type="Texture2D" uid="uid://cw5smt8yqrs5s" path="res://icons/bill.svg" id="9_y3xxt"]
 [ext_resource type="PackedScene" uid="uid://cmi6qxjtm3isa" path="res://scenes/bill_history.tscn" id="10_y3xxt"]
+[ext_resource type="Texture2D" uid="uid://cwrn28vf02igo" path="res://icons/history.svg" id="11_xsp7o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whljx"]
 bg_color = Color(0.13725491, 0.13725491, 0.13725491, 1)
@@ -139,12 +141,14 @@ content = ExtResource("7_5sfjl")
 
 [node name="BillButton" parent="Main/Sidebar/SidebarContainer/TopContainer" unique_id=773584587 instance=ExtResource("3_jh1ax")]
 layout_mode = 2
+icon = ExtResource("9_y3xxt")
 label = "Bill"
 content = ExtResource("9_7pvxh")
 
 [node name="BillHistoryButton" parent="Main/Sidebar/SidebarContainer/TopContainer" unique_id=19155210 instance=ExtResource("3_jh1ax")]
 layout_mode = 2
-label = "Bill History"
+icon = ExtResource("11_xsp7o")
+label = "History"
 content = ExtResource("10_y3xxt")
 
 [node name="BottomContainer" type="VBoxContainer" parent="Main/Sidebar/SidebarContainer" unique_id=892054570]

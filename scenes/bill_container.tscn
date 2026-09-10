@@ -1,0 +1,171 @@
+[gd_scene format=3 uid="uid://cc3iewi3v8k4r"]
+
+[ext_resource type="Script" uid="uid://sckwyhiogsop" path="res://scripts/bill_container.gd" id="1_4b1w5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pkycr"]
+bg_color = Color(0.13333334, 0.13333334, 0.53333336, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4b1w5"]
+bg_color = Color(0.2, 0.2, 0.6, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="BillContainer" type="VBoxContainer" unique_id=1989559385]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 293.0
+grow_vertical = 2
+theme_override_constants/separation = 15
+script = ExtResource("1_4b1w5")
+
+[node name="CustomerContainer" type="HBoxContainer" parent="." unique_id=1936270853]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CustomerContainer" unique_id=1483396818]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Customer: "
+
+[node name="Customer" type="LineEdit" parent="CustomerContainer" unique_id=1401505940]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Separator" type="HSeparator" parent="." unique_id=1573499090]
+custom_minimum_size = Vector2(0, 10)
+custom_maximum_size = Vector2(-1, 10)
+layout_mode = 2
+
+[node name="NameContainer" type="HBoxContainer" parent="." unique_id=1026206769]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NameContainer" unique_id=2085233110]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Name: "
+
+[node name="Name" type="LineEdit" parent="NameContainer" unique_id=864058897]
+layout_mode = 2
+size_flags_horizontal = 3
+select_all_on_focus = true
+
+[node name="DropDownMenu" type="PopupPanel" parent="NameContainer/Name" unique_id=560558689]
+oversampling_override = 1.0
+
+[node name="Background" type="ColorRect" parent="NameContainer/Name/DropDownMenu" unique_id=1980533409]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Choices" type="Tree" parent="NameContainer/Name/DropDownMenu" unique_id=603461186]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 96.0
+allow_search = false
+hide_folding = true
+hide_root = true
+
+[node name="BatchContainer" type="HBoxContainer" parent="." unique_id=1021964899]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BatchContainer" unique_id=487464051]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Batch No.: "
+
+[node name="BatchNo" type="OptionButton" parent="BatchContainer" unique_id=1445422604]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="QuantityContainer" type="HBoxContainer" parent="." unique_id=215078153]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="QuantityContainer" unique_id=1681121147]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Quantity: "
+
+[node name="Quantity" type="SpinBox" parent="QuantityContainer" unique_id=223816263]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100000.0
+rounded = true
+
+[node name="PriceContainer" type="HBoxContainer" parent="." unique_id=1047581347]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PriceContainer" unique_id=1735312441]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Price: "
+
+[node name="Price" type="SpinBox" parent="PriceContainer" unique_id=964526610]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_behavior_recursive = 1
+max_value = 1000000.0
+step = 0.01
+editable = false
+prefix = "Rs. "
+
+[node name="Seperator" type="Label" parent="PriceContainer" unique_id=995309526]
+layout_mode = 2
+text = "/"
+
+[node name="Unit" type="SpinBox" parent="PriceContainer" unique_id=104254514]
+layout_mode = 2
+focus_behavior_recursive = 1
+min_value = 1.0
+max_value = 1000.0
+value = 1.0
+rounded = true
+editable = false
+
+[node name="TotalContainer" type="HBoxContainer" parent="." unique_id=2139119854]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TotalContainer" unique_id=2015492695]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Total: "
+
+[node name="Total" type="SpinBox" parent="TotalContainer" unique_id=1209646320]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1000000.0
+step = 0.01
+alignment = 2
+prefix = "Rs. "
+
+[node name="AddToList" type="Button" parent="." unique_id=1935864596]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_pkycr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4b1w5")
+text = "Add"
+
+[connection signal="focus_entered" from="NameContainer/Name" to="." method="_on_name_focus_entered"]
+[connection signal="focus_exited" from="NameContainer/Name" to="." method="_on_name_focus_exited"]
+[connection signal="gui_input" from="NameContainer/Name" to="." method="_on_name_gui_input"]
+[connection signal="text_changed" from="NameContainer/Name" to="." method="update_choices"]
+[connection signal="cell_selected" from="NameContainer/Name/DropDownMenu/Choices" to="." method="_on_choices_cell_selected"]
+[connection signal="item_selected" from="BatchContainer/BatchNo" to="." method="_on_batch_no_item_selected"]
+[connection signal="value_changed" from="QuantityContainer/Quantity" to="." method="calculate_total"]
