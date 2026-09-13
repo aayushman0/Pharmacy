@@ -2,6 +2,21 @@
 
 [ext_resource type="Script" uid="uid://cieufep5wr21o" path="res://scripts/bill_history.gd" id="1_koclp"]
 [ext_resource type="PackedScene" uid="uid://lulpbgk451t8" path="res://scenes/datetime_container.tscn" id="1_xa5mk"]
+[ext_resource type="PackedScene" uid="uid://coy6l1dbu6no" path="res://scenes/bill_list.tscn" id="3_bblrt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljn0u"]
+bg_color = Color(0.73333335, 0.2, 0.2, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8s4m"]
+bg_color = Color(0.8, 0.26666668, 0.26666668, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="BillHistory" type="Panel" unique_id=969217790]
 anchors_preset = 15
@@ -60,14 +75,115 @@ allow_search = false
 hide_folding = true
 select_mode = 1
 
-[node name="RightContainer" type="VBoxContainer" parent="MainContainer" unique_id=364132727]
+[node name="RightContainer" type="Panel" parent="MainContainer" unique_id=791213380]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="RightContainer" type="VBoxContainer" parent="MainContainer/RightContainer" unique_id=364132727]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.01
+anchor_right = 0.99
+anchor_bottom = 0.99
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="IDContainer" type="HBoxContainer" parent="MainContainer/RightContainer/RightContainer" unique_id=1770391108]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/RightContainer/RightContainer/IDContainer" unique_id=59425547]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Customer's Name: "
+
+[node name="CustomerName" type="LineEdit" parent="MainContainer/RightContainer/RightContainer/IDContainer" unique_id=792190150]
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
+
+[node name="Label2" type="Label" parent="MainContainer/RightContainer/RightContainer/IDContainer" unique_id=61160706]
+layout_mode = 2
+text = "Bill ID: "
+
+[node name="BillID" type="LineEdit" parent="MainContainer/RightContainer/RightContainer/IDContainer" unique_id=1552773835]
+layout_mode = 2
+alignment = 2
+editable = false
+
+[node name="BillList" parent="MainContainer/RightContainer/RightContainer" unique_id=337494581 instance=ExtResource("3_bblrt")]
+layout_mode = 2
+select_mode = 1
+bill_history = true
+
+[node name="SumTotal" type="HBoxContainer" parent="MainContainer/RightContainer/RightContainer" unique_id=1881675789]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/RightContainer/RightContainer/SumTotal" unique_id=1151617169]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Sum Total: "
+
+[node name="SumTotal" type="SpinBox" parent="MainContainer/RightContainer/RightContainer/SumTotal" unique_id=539195211]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+max_value = 10000000.0
+step = 0.01
+alignment = 2
+editable = false
+prefix = "Rs. "
+
+[node name="Label2" type="Label" parent="MainContainer/RightContainer/RightContainer/SumTotal" unique_id=2047860801]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Discount: "
+
+[node name="Discount" type="SpinBox" parent="MainContainer/RightContainer/RightContainer/SumTotal" unique_id=368848748]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -100000000.0
+max_value = 10000000.0
+step = 0.01
+alignment = 2
+editable = false
+prefix = "Rs. "
+
+[node name="NetTotal" type="HBoxContainer" parent="MainContainer/RightContainer/RightContainer" unique_id=78657863]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/RightContainer/RightContainer/NetTotal" unique_id=78519767]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Net Total: "
+
+[node name="NetTotal" type="SpinBox" parent="MainContainer/RightContainer/RightContainer/NetTotal" unique_id=245368084]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+max_value = 10000000.0
+step = 0.01
+alignment = 2
+editable = false
+prefix = "Rs. "
+
+[node name="Seperator" type="Label" parent="MainContainer/RightContainer/RightContainer/NetTotal" unique_id=1344698184]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+
+[node name="DeleteFromDB" type="Button" parent="MainContainer/RightContainer/RightContainer/NetTotal" unique_id=1794423933]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_ljn0u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_w8s4m")
+text = "Delete"
 
 [connection signal="pressed" from="MainContainer/LeftContainer/FilterContainer/LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="value_changed" from="MainContainer/LeftContainer/FilterContainer/DateFilter/Year" to="." method="refresh"]
 [connection signal="value_changed" from="MainContainer/LeftContainer/FilterContainer/DateFilter/Month" to="." method="refresh"]
 [connection signal="value_changed" from="MainContainer/LeftContainer/FilterContainer/DateFilter/Day" to="." method="refresh"]
 [connection signal="pressed" from="MainContainer/LeftContainer/FilterContainer/RightButton" to="." method="_on_right_button_pressed"]
+[connection signal="item_selected" from="MainContainer/LeftContainer/History" to="." method="_on_history_item_selected"]
 
 [editable path="MainContainer/LeftContainer/FilterContainer/DateFilter"]

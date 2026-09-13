@@ -1,6 +1,7 @@
 extends Tree
 
 @onready var table: TreeItem = self.create_item()
+@export var bill_history: bool = false
 
 signal list_updated(sum: float)
 
@@ -31,6 +32,8 @@ func add_to_list(values: Array) -> void:
 	get_sum_total()
 
 func _on_item_activated() -> void:
+	if bill_history:
+		return
 	var selected_item: TreeItem = self.get_selected()
 	if not selected_item or selected_item == table:
 		return
@@ -59,7 +62,7 @@ func get_bill_str() -> String:
 			 created_at = '" + Global.dt_now_str + "'
 			 WHERE id = " + row.get_text(5)
 		)
-	return ":".join(bill_arr)
+	return ",".join(bill_arr)
 
 func refresh() -> void:
 	for child in table.get_children():

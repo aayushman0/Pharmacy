@@ -3,8 +3,15 @@ extends Panel
 @onready var date_filter: HBoxContainer = $MainContainer/LeftContainer/FilterContainer/DateFilter
 @onready var history: Tree = $MainContainer/LeftContainer/History
 @onready var history_table: TreeItem = history.create_item()
+@onready var customer_name: LineEdit = $MainContainer/RightContainer/RightContainer/IDContainer/CustomerName
+@onready var bill_list: Tree = $MainContainer/RightContainer/RightContainer/BillList
+@onready var bill_id: LineEdit = $MainContainer/RightContainer/RightContainer/IDContainer/BillID
+@onready var sum_total: SpinBox = $MainContainer/RightContainer/RightContainer/SumTotal/SumTotal
+@onready var net_total: SpinBox = $MainContainer/RightContainer/RightContainer/NetTotal/NetTotal
+@onready var discount: SpinBox = $MainContainer/RightContainer/RightContainer/SumTotal/Discount
 var start_id: int
 var start_date: String
+
 
 func _ready() -> void:
 	date_filter.update_datetime_no_signal(Global.dt_now_str)
@@ -35,6 +42,44 @@ func change_day(day: int) -> void:
 	date_filter.update_datetime_no_signal(Time.get_date_string_from_unix_time(unix_date) + " 00:00:00")
 	refresh()
 
+func _on_history_item_selected() -> void:
+	var selected: TreeItem = history.get_selected()
+	if not selected or selected == history_table:
+		return
+	Global.db.query("SELECT * FROM product_bill WHERE id = " + selected.get_text(4))
+	if not Global.db.query_result:
+		Global.raise_alert("Internal Error!!! Bill not found!")
+		return
+
+	bill_list.refresh()
+	var bill: Dictionary = Global.db.query_result[0]
+	customer_name.text = bill.name
+	bill_id.text = str(bill.id)
+	sum_total.set_value_no_signal(bill.total_amount)
+	net_total.set_value_no_signal(bill.net_amount)
+	discount.set_value_no_signal(bill.discount)
+
+	var entry_values: PackedStringArray
+	var product: Dictionary
+	for bill_entry in bill.bill.split(","):
+		entry_values = bill_entry.split(":")
+		Global.db.query(
+			"SELECT batch.*, product.name, product.type FROM batch
+			 INNER JOIN product ON batch.product_id = product.id
+			 WHERE batch.id = " + entry_values[0]
+		)
+		if not Global.db.query_result:
+			Global.raise_alert("Internal Error!!! Batch not found!")
+			return
+		product = Global.db.query_result[0]
+		bill_list.add_to_list([
+			Global.product_types_dict.get(product.type, "---") + ". " + product.name,
+			product.batch_no,
+			product.exp_date.substr(0, 7),
+			entry_values[1],
+			entry_values[2],
+		])
+
 func refresh(_input: Variant = null) -> void:
 	for child in history_table.get_children():
 		child.free()
@@ -48,6 +93,13 @@ func refresh(_input: Variant = null) -> void:
 		row.set_text(3, rows.bill_date.substr(11, 5))
 		row.set_text(4, str(rows.id))
 		Global.set_column_alignment(row, [0, 2, 3])
+
+	customer_name.text = ""
+	bill_id.text = ""
+	bill_list.refresh()
+	sum_total.set_value_no_signal(0)
+	net_total.set_value_no_signal(0)
+	discount.set_value_no_signal(0)
 
 func change_fiscal_year() -> void:
 	if date_filter.get_date_str() >= (date_filter.get_date_str().substr(0, 4) + "-07-17"):
