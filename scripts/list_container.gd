@@ -58,7 +58,7 @@ func _ready() -> void:
 		main_table.set_column_expand(7, false)
 		main_table.set_column_custom_minimum_width(7, 0)
 
-		set_column_alignment(table, [2, 3, 4, 5])
+		Global.set_column_alignment(table, [2, 3, 4, 5])
 	refresh()
 
 func refresh(_input: Variant = null) -> void:
@@ -95,7 +95,7 @@ func refresh(_input: Variant = null) -> void:
 			rows.set_text(3, "%.2f/%02d " % [row.price, row.min_unit])
 			rows.set_text(4, " " + str(row.best_before))
 			rows.set_text(5, row.shelf)
-			set_column_alignment(rows, [0, 3])
+			Global.set_column_alignment(rows, [0, 3])
 		else:
 			rows.set_text(0, Global.product_types_dict.get(row.type, "---") + ". " + row.name)
 			rows.set_text(1, row.batch_no)
@@ -109,8 +109,4 @@ func refresh(_input: Variant = null) -> void:
 				rows.set_custom_color(4, Color.RED)
 			elif row.exp_date < Global.get_future_date(3):
 				rows.set_custom_color(4, Color.ORANGE)
-			set_column_alignment(rows, [2, 3, 4, 5])
-
-func set_column_alignment(row: TreeItem, cols: Array[int]):
-	for i in cols:
-		row.set_text_alignment(i, HORIZONTAL_ALIGNMENT_RIGHT)
+			Global.set_column_alignment(rows, [2, 3, 4, 5])

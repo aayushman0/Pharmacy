@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://bo6lfatk7i7h6"]
 
 [ext_resource type="PackedScene" uid="uid://cc3iewi3v8k4r" path="res://scenes/bill_container.tscn" id="1_h4yh8"]
+[ext_resource type="Script" uid="uid://bmnxtbclwnldh" path="res://scripts/bill.gd" id="1_vl5p3"]
+[ext_resource type="PackedScene" uid="uid://coy6l1dbu6no" path="res://scenes/bill_list.tscn" id="3_t8v7m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h4yh8"]
 bg_color = Color(0.06666667, 0.46666667, 0.06666667, 1)
@@ -22,6 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_vl5p3")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1763742521]
 layout_mode = 1
@@ -60,9 +63,36 @@ anchors_preset = -1
 anchor_left = 0.01
 anchor_top = 0.01
 anchor_right = 0.99
-anchor_bottom = 0.99
+anchor_bottom = 0.93
 offset_right = 0.0
 grow_horizontal = 2
+
+[node name="DiscountContainer" type="HBoxContainer" parent="MainContainer/LeftContainer" unique_id=1410081954]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.94
+anchor_right = 0.99
+anchor_bottom = 0.99
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainContainer/LeftContainer/DiscountContainer" unique_id=431652996]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Discount: "
+
+[node name="Discount" type="SpinBox" parent="MainContainer/LeftContainer/DiscountContainer" unique_id=741576314]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -1000000.0
+max_value = 1000000.0
+step = 0.01
+alignment = 2
+update_on_text_changed = true
+prefix = "Rs. "
+select_all_on_focus = true
 
 [node name="ListContainer" type="Panel" parent="MainContainer" unique_id=1773373623]
 layout_mode = 2
@@ -87,10 +117,8 @@ anchor_bottom = 0.99
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BillList" type="Tree" parent="MainContainer/ListContainer/ListContainer" unique_id=765844563]
+[node name="BillList" parent="MainContainer/ListContainer/ListContainer" unique_id=337494581 instance=ExtResource("3_t8v7m")]
 layout_mode = 2
-size_flags_vertical = 3
-columns = 6
 
 [node name="PriceContainer" type="VBoxContainer" parent="MainContainer/ListContainer/ListContainer" unique_id=1100773402]
 layout_mode = 2
@@ -107,7 +135,7 @@ text = "Sum Total: "
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 max_value = 10000000.0
-step = 0.0
+step = 0.01
 alignment = 2
 editable = false
 prefix = "Rs. "
@@ -124,7 +152,7 @@ text = "Net Total: "
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 max_value = 10000000.0
-step = 0.0
+step = 0.01
 alignment = 2
 editable = false
 prefix = "Rs. "
@@ -141,3 +169,10 @@ theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_h4yh8")
 theme_override_styles/hover = SubResource("StyleBoxFlat_vl5p3")
 text = "Save"
+
+[connection signal="pressed" from="MainContainer/LeftContainer/BillContainer/AddToList" to="." method="add_to_list"]
+[connection signal="value_changed" from="MainContainer/LeftContainer/DiscountContainer/Discount" to="." method="update_net_total"]
+[connection signal="list_updated" from="MainContainer/ListContainer/ListContainer/BillList" to="." method="update_sum_total"]
+[connection signal="pressed" from="MainContainer/ListContainer/ListContainer/PriceContainer/NetTotal/SaveToDB" to="." method="save_to_db"]
+
+[editable path="MainContainer/LeftContainer/BillContainer"]

@@ -1,5 +1,6 @@
 extends VBoxContainer
 
+@onready var bill_list: Tree
 @onready var customer_name: LineEdit = $CustomerContainer/Customer
 @onready var stock_name: LineEdit = $NameContainer/Name
 @onready var stock_batch_no: OptionButton = $BatchContainer/BatchNo
@@ -10,7 +11,7 @@ extends VBoxContainer
 @onready var drop_down_menu: PopupPanel = $NameContainer/Name/DropDownMenu
 @onready var choices: Tree = $NameContainer/Name/DropDownMenu/Choices
 @onready var choice_list: TreeItem = choices.create_item()
-var product_id: String
+var product_id: String = ""
 
 func _ready() -> void:
 	drop_down_menu.unfocusable = true
@@ -19,7 +20,6 @@ func _ready() -> void:
 	choices.set_column_custom_minimum_width(1, 0)
 	choices.set_column_expand(2, false)
 	choices.set_column_custom_minimum_width(2, 0)
-	stock_quantity.get_line_edit().text_changed.connect(update_qty)
 	refresh()
 
 func _on_name_focus_entered() -> void:
@@ -58,7 +58,7 @@ func _on_name_gui_input(event: InputEvent) -> void:
 			if next_selection:
 				next_selection.select(0)
 		choices.set_block_signals(false)
-	elif event.is_action_released("ui_accept"):
+	elif event.is_action_released("ui_accept") and not event.is_action_released("ui_select"):
 		if not choices.get_selected():
 			choice_list.get_child(0).select(0)
 		else:
@@ -77,6 +77,10 @@ func _on_name_focus_exited() -> void:
 			set_from_choice(choices.get_selected())
 		else:
 			set_from_choice(choice_list.get_child(0))
+	else:
+		stock_name.text = ""
+		product_id = ""
+		stock_batch_no.clear()
 	drop_down_menu.hide()
 
 func set_from_choice(selected: TreeItem) -> void:
@@ -85,25 +89,33 @@ func set_from_choice(selected: TreeItem) -> void:
 	product_id = selected.get_text(2)
 	Global.db.query("SELECT * FROM batch WHERE product_id = " + product_id + " AND quantity > 0 ORDER BY exp_date;")
 	stock_batch_no.clear()
-	if not Global.db.query_result:
+	var batches: Array[Dictionary] = []
+	if bill_list:
+		var present_batches: Array[String] = bill_list.get_batches_from_list(stock_name.text)
+		for rows in Global.db.query_result:
+			if rows.batch_no not in present_batches:
+				batches.append(rows)
+	else:
+		batches = Global.db.query_result
+	if not batches:
 		stock_price.set_value_no_signal(0)
 		stock_quantity.value = 0
 		return
-	for rows in Global.db.query_result:
+	for rows in batches:
 		stock_batch_no.add_item(rows.batch_no)
 		var img: Image = Image.create_empty(16, 16, false, Image.FORMAT_RGBA8)
 		if rows.exp_date < Global.dt_now_str:
 			img.fill(Color.RED)
 			stock_batch_no.set_item_icon(-1, ImageTexture.create_from_image(img))
-			#stock_batch_no.get_popup().set_item_custom_fg_color(-1, Color.RED)
 		elif rows.exp_date < Global.get_future_date(3):
 			img.fill(Color.ORANGE)
 			stock_batch_no.set_item_icon(-1, ImageTexture.create_from_image(img))
-			#stock_batch_no.get_popup().set_item_custom_fg_color(-1, Color.ORANGE)
 	stock_batch_no.select(0)
 	_on_batch_no_item_selected(0)
 
 func _on_batch_no_item_selected(index: int) -> void:
+	if not product_id:
+		return
 	stock_batch_no.icon = stock_batch_no.get_item_icon(index)
 	Global.db.query("SELECT * FROM batch WHERE product_id = " + product_id + " AND batch_no = '" + stock_batch_no.get_item_text(index) + "';")
 	if not Global.db.query_result:
@@ -114,11 +126,25 @@ func _on_batch_no_item_selected(index: int) -> void:
 	stock_quantity.max_value = selected_batch.quantity
 	stock_quantity.value = 0
 
-func update_qty(_new_text: String) -> void:
-	stock_quantity.apply()
-
 func calculate_total(_input: float) -> void:
 	stock_total.set_value_no_signal(stock_price.value * stock_quantity.value)
 
+func send_values() -> Dictionary:
+	if not stock_name.text or stock_batch_no.selected == -1 or not stock_quantity.value:
+		return {}
+	return {
+		"name": stock_name.text,
+		"product_id": product_id,
+		"batch_no": stock_batch_no.get_item_text(stock_batch_no.selected),
+		"quantity": int(stock_quantity.value),
+		"total": stock_total.value
+	}
+
 func refresh() -> void:
-	pass
+	product_id = ""
+	stock_name.text = ""
+	stock_batch_no.clear()
+	stock_quantity.set_value_no_signal(0)
+	stock_price.set_value_no_signal(0)
+	stock_unit.set_value_no_signal(0)
+	stock_total.set_value_no_signal(0)

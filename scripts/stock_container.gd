@@ -66,7 +66,7 @@ func _on_name_gui_input(event: InputEvent) -> void:
 			if next_selection:
 				next_selection.select(0)
 		choices.set_block_signals(false)
-	elif event.is_action_released("ui_accept"):
+	elif event.is_action_released("ui_accept") and not event.is_action_released("ui_select"):
 		if not choices.get_selected():
 			choice_list.get_child(0).select(0)
 		else:

@@ -111,3 +111,7 @@ func _ready() -> void:
 func raise_alert(msg: String) -> void:
 	message_box.dialog_text = msg
 	message_box.popup_centered()
+
+func set_column_alignment(row: TreeItem, cols: Array[int]):
+	for i in cols:
+		row.set_text_alignment(i, HORIZONTAL_ALIGNMENT_RIGHT)

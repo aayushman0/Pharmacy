@@ -20,7 +20,7 @@ func _ready() -> void:
 	history.set_column_custom_minimum_width(3, 75)
 	history.set_column_expand(4, false)
 	history.set_column_custom_minimum_width(4, 0)
-	set_column_alignment(history_table, [0, 2, 3])
+	Global.set_column_alignment(history_table, [0, 2, 3])
 	refresh()
 
 func _on_left_button_pressed() -> void:
@@ -47,7 +47,7 @@ func refresh(_input: Variant = null) -> void:
 		row.set_text(2, "%.1f"%[rows.net_amount])
 		row.set_text(3, rows.bill_date.substr(11, 5))
 		row.set_text(4, str(rows.id))
-		set_column_alignment(row, [0, 2, 3])
+		Global.set_column_alignment(row, [0, 2, 3])
 
 func change_fiscal_year() -> void:
 	if date_filter.get_date_str() >= (date_filter.get_date_str().substr(0, 4) + "-07-17"):
@@ -59,7 +59,3 @@ func change_fiscal_year() -> void:
 		start_id = 0
 	else:
 		start_id = Global.db.query_result[0].id
-
-func set_column_alignment(row: TreeItem, cols: Array[int]):
-	for i in cols:
-		row.set_text_alignment(i, HORIZONTAL_ALIGNMENT_RIGHT)
