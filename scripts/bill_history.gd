@@ -9,6 +9,8 @@ extends Panel
 @onready var sum_total: SpinBox = $MainContainer/RightContainer/RightContainer/SumTotal/SumTotal
 @onready var net_total: SpinBox = $MainContainer/RightContainer/RightContainer/NetTotal/NetTotal
 @onready var discount: SpinBox = $MainContainer/RightContainer/RightContainer/SumTotal/Discount
+@onready var confirmation_dialog: ConfirmationDialog = $ConfirmationDialog
+@export_enum("product", "service") var bill_type = "product"
 var start_id: int
 var start_date: String
 
@@ -28,6 +30,12 @@ func _ready() -> void:
 	history.set_column_expand(4, false)
 	history.set_column_custom_minimum_width(4, 0)
 	Global.set_column_alignment(history_table, [0, 2, 3])
+
+	var label = confirmation_dialog.get_label()
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.add_theme_font_size_override("font_size", 24)
+
 	refresh()
 
 func _on_left_button_pressed() -> void:
@@ -46,11 +54,10 @@ func _on_history_item_selected() -> void:
 	var selected: TreeItem = history.get_selected()
 	if not selected or selected == history_table:
 		return
-	Global.db.query("SELECT * FROM product_bill WHERE id = " + selected.get_text(4))
+	Global.db.query("SELECT * FROM " + bill_type + "_bill WHERE id = " + selected.get_text(4))
 	if not Global.db.query_result:
 		Global.raise_alert("Internal Error!!! Bill not found!")
 		return
-
 	bill_list.refresh()
 	var bill: Dictionary = Global.db.query_result[0]
 	customer_name.text = bill.name
@@ -58,6 +65,11 @@ func _on_history_item_selected() -> void:
 	sum_total.set_value_no_signal(bill.total_amount)
 	net_total.set_value_no_signal(bill.net_amount)
 	discount.set_value_no_signal(bill.discount)
+
+	if bill_type == "service":
+		for bill_entry in bill.bill.split(","):
+			bill_list.add_to_list(Array(bill_entry.split("::")))
+		return
 
 	var entry_values: PackedStringArray
 	var product: Dictionary
@@ -80,11 +92,34 @@ func _on_history_item_selected() -> void:
 			entry_values[2],
 		])
 
+func raise_confirmation() -> void:
+	confirmation_dialog.popup_centered()
+
+func delete_from_db() -> void:
+	Global.db.query("SELECT * FROM " + bill_type + "_bill WHERE id = " + bill_id.text)
+	if not Global.db.query_result:
+		Global.raise_alert("Bill not found!")
+		return
+	var bill_str: String = Global.db.query_result[0].bill
+	Global.db.update_rows(bill_type + "_bill", "id = " + bill_id.text, {
+		"is_enabled": 0
+	})
+	if bill_type == "product":
+		var item_arr: PackedStringArray
+		for item_str in bill_str.split(","):
+			item_arr = item_str.split(":")
+			Global.db.query(
+				"UPDATE batch SET quantity = quantity + " + item_arr[1] + ",
+				 created_at = '" + Global.dt_now_str + "'
+				 WHERE id = " + item_arr[0]
+			)
+	refresh()
+
 func refresh(_input: Variant = null) -> void:
 	for child in history_table.get_children():
 		child.free()
 	change_fiscal_year()
-	Global.db.query("SELECT * FROM product_bill WHERE is_enabled = true AND DATE(bill_date) = '" + date_filter.get_date_str() + "' ORDER BY id DESC;")
+	Global.db.query("SELECT * FROM " + bill_type + "_bill WHERE is_enabled = true AND DATE(bill_date) = '" + date_filter.get_date_str() + "' ORDER BY id DESC;")
 	for rows in Global.db.query_result:
 		var row: TreeItem = history.create_item(history_table)
 		row.set_text(0, str(rows.id - start_id))
@@ -106,7 +141,7 @@ func change_fiscal_year() -> void:
 		start_date = date_filter.get_date_str().substr(0, 4) + "-07-17"
 	else:
 		start_date = str(int(date_filter.get_date_str().substr(0, 4)) - 1) + "-07-17"
-	Global.db.query("SELECT * FROM product_bill WHERE DATE(bill_date) < '" + start_date + "' ORDER BY id DESC LIMIT 1;")
+	Global.db.query("SELECT * FROM " + bill_type + "_bill WHERE DATE(bill_date) < '" + start_date + "' ORDER BY id DESC LIMIT 1;")
 	if not Global.db.query_result:
 		start_id = 0
 	else:

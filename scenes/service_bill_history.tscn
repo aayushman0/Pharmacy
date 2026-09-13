@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://mabwbie7o7xt"]
+
+[ext_resource type="PackedScene" uid="uid://cmi6qxjtm3isa" path="res://scenes/bill_history.tscn" id="1_mg48b"]
+
+[node name="BillHistory" unique_id=969217790 instance=ExtResource("1_mg48b")]
+bill_type = "service"
+
+[node name="BillList" parent="MainContainer/RightContainer/RightContainer" parent_id_path=PackedInt32Array(364132727) index="1" unique_id=337494581]
+bill_type = "service"
+
+[editable path="MainContainer/LeftContainer/FilterContainer/DateFilter"]

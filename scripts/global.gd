@@ -1,6 +1,7 @@
 extends Node
 
 @onready var message_box: AcceptDialog = null
+
 var regex = RegEx.new()
 var dt_now: Dictionary:
 	get:
@@ -22,6 +23,7 @@ var product_types_dict: Dictionary[String, String] = {
 	"Injection": "Inj",
 	"Other": "Oth",
 }
+
 
 func alphanumeric(input: String) -> String:
 	regex.compile("[^A-Za-z0-9]")

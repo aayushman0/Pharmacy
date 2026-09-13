@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://cw5smt8yqrs5s" path="res://icons/bill.svg" id="9_y3xxt"]
 [ext_resource type="PackedScene" uid="uid://cmi6qxjtm3isa" path="res://scenes/bill_history.tscn" id="10_y3xxt"]
 [ext_resource type="Texture2D" uid="uid://cwrn28vf02igo" path="res://icons/history.svg" id="11_xsp7o"]
+[ext_resource type="PackedScene" uid="uid://ddbprs7cwmtvx" path="res://scenes/service_bill.tscn" id="13_vgks2"]
+[ext_resource type="PackedScene" uid="uid://mabwbie7o7xt" path="res://scenes/service_bill_history.tscn" id="14_dylgi"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whljx"]
 bg_color = Color(0.13725491, 0.13725491, 0.13725491, 1)
@@ -150,6 +152,18 @@ layout_mode = 2
 icon = ExtResource("11_xsp7o")
 label = "History"
 content = ExtResource("10_y3xxt")
+
+[node name="ServiceBillButton" parent="Main/Sidebar/SidebarContainer/TopContainer" unique_id=422905132 instance=ExtResource("3_jh1ax")]
+layout_mode = 2
+icon = ExtResource("9_y3xxt")
+label = "S. Bill"
+content = ExtResource("13_vgks2")
+
+[node name="ServiceBillHistoryButton" parent="Main/Sidebar/SidebarContainer/TopContainer" unique_id=1766396604 instance=ExtResource("3_jh1ax")]
+layout_mode = 2
+icon = ExtResource("11_xsp7o")
+label = "S. History"
+content = ExtResource("14_dylgi")
 
 [node name="BottomContainer" type="VBoxContainer" parent="Main/Sidebar/SidebarContainer" unique_id=892054570]
 layout_mode = 2
