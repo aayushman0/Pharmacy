@@ -75,6 +75,23 @@ allow_search = false
 hide_folding = true
 select_mode = 1
 
+[node name="DailyTotalContainer" type="HBoxContainer" parent="MainContainer/LeftContainer" unique_id=135528627]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/LeftContainer/DailyTotalContainer" unique_id=2115053226]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Daily Total: "
+
+[node name="DailyTotal" type="SpinBox" parent="MainContainer/LeftContainer/DailyTotalContainer" unique_id=781331710]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 10000000.0
+step = 0.01
+alignment = 2
+editable = false
+prefix = "Rs. "
+
 [node name="RightContainer" type="Panel" parent="MainContainer" unique_id=791213380]
 layout_mode = 2
 size_flags_horizontal = 3

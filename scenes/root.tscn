@@ -8,12 +8,16 @@
 [ext_resource type="PackedScene" uid="uid://cq7hjs22lws3s" path="res://scenes/home.tscn" id="5_j287u"]
 [ext_resource type="PackedScene" uid="uid://4008uykipq8f" path="res://scenes/item.tscn" id="6_j287u"]
 [ext_resource type="PackedScene" uid="uid://da5ts5m13u1rc" path="res://scenes/stock.tscn" id="7_5sfjl"]
+[ext_resource type="Texture2D" uid="uid://dd4xqnlnn284c" path="res://icons/item.svg" id="7_gt4lb"]
+[ext_resource type="Texture2D" uid="uid://dl3y41f3hr0dl" path="res://icons/stock.svg" id="8_log26"]
 [ext_resource type="PackedScene" uid="uid://bo6lfatk7i7h6" path="res://scenes/bill.tscn" id="9_7pvxh"]
 [ext_resource type="Texture2D" uid="uid://cw5smt8yqrs5s" path="res://icons/bill.svg" id="9_y3xxt"]
 [ext_resource type="PackedScene" uid="uid://cmi6qxjtm3isa" path="res://scenes/bill_history.tscn" id="10_y3xxt"]
 [ext_resource type="Texture2D" uid="uid://cwrn28vf02igo" path="res://icons/history.svg" id="11_xsp7o"]
+[ext_resource type="Texture2D" uid="uid://dy1mm8nipy21e" path="res://icons/service_bill.svg" id="13_jrhyn"]
 [ext_resource type="PackedScene" uid="uid://ddbprs7cwmtvx" path="res://scenes/service_bill.tscn" id="13_vgks2"]
 [ext_resource type="PackedScene" uid="uid://mabwbie7o7xt" path="res://scenes/service_bill_history.tscn" id="14_dylgi"]
+[ext_resource type="Texture2D" uid="uid://8uvvjs6kj8yb" path="res://icons/service_history.svg" id="15_log26"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whljx"]
 bg_color = Color(0.13725491, 0.13725491, 0.13725491, 1)
@@ -133,11 +137,13 @@ content = ExtResource("5_j287u")
 
 [node name="ItemButton" parent="Main/Sidebar/SidebarContainer/TopContainer" unique_id=1384034629 instance=ExtResource("3_jh1ax")]
 layout_mode = 2
+icon = ExtResource("7_gt4lb")
 label = "Item"
 content = ExtResource("6_j287u")
 
 [node name="Stock" parent="Main/Sidebar/SidebarContainer/TopContainer" unique_id=1866871588 instance=ExtResource("3_jh1ax")]
 layout_mode = 2
+icon = ExtResource("8_log26")
 label = "Stock"
 content = ExtResource("7_5sfjl")
 
@@ -155,13 +161,13 @@ content = ExtResource("10_y3xxt")
 
 [node name="ServiceBillButton" parent="Main/Sidebar/SidebarContainer/TopContainer" unique_id=422905132 instance=ExtResource("3_jh1ax")]
 layout_mode = 2
-icon = ExtResource("9_y3xxt")
+icon = ExtResource("13_jrhyn")
 label = "S. Bill"
 content = ExtResource("13_vgks2")
 
 [node name="ServiceBillHistoryButton" parent="Main/Sidebar/SidebarContainer/TopContainer" unique_id=1766396604 instance=ExtResource("3_jh1ax")]
 layout_mode = 2
-icon = ExtResource("11_xsp7o")
+icon = ExtResource("15_log26")
 label = "S. History"
 content = ExtResource("14_dylgi")
 
@@ -203,7 +209,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 40
-text = "Shop Name Here"
+text = "Metro Pharmacy"
 horizontal_alignment = 1
 vertical_alignment = 1
 

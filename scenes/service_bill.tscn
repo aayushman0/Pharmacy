@@ -1,11 +1,43 @@
 [gd_scene format=3 uid="uid://ddbprs7cwmtvx"]
 
+[ext_resource type="PackedScene" uid="uid://coy6l1dbu6no" path="res://scenes/bill_list.tscn" id="1_84vax"]
+[ext_resource type="Script" uid="uid://c55owpsku2wcm" path="res://scripts/service_bill.gd" id="1_dl23f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s6g8l"]
+bg_color = Color(0.13333334, 0.13333334, 0.53333336, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xgnml"]
+bg_color = Color(0.2, 0.2, 0.6, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_84vax"]
+bg_color = Color(0.06666667, 0.46666667, 0.06666667, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dl23f"]
+bg_color = Color(0.13333334, 0.53333336, 0.13333334, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [node name="ServiceBill" type="Panel" unique_id=2085112481]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_dl23f")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1708933007]
 layout_mode = 1
@@ -15,3 +47,201 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="MainContainer" type="HBoxContainer" parent="." unique_id=592891766]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftContainer" type="Panel" parent="MainContainer" unique_id=1879222401]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Background" type="ColorRect" parent="MainContainer/LeftContainer" unique_id=1761523556]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BillContainer" type="VBoxContainer" parent="MainContainer/LeftContainer" unique_id=154250708]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.01
+anchor_right = 0.99
+anchor_bottom = 0.93
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="CustomerContainer" type="HBoxContainer" parent="MainContainer/LeftContainer/BillContainer" unique_id=978914744]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/LeftContainer/BillContainer/CustomerContainer" unique_id=223441374]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Customer: "
+
+[node name="Customer" type="LineEdit" parent="MainContainer/LeftContainer/BillContainer/CustomerContainer" unique_id=1211322153]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Separator" type="HSeparator" parent="MainContainer/LeftContainer/BillContainer" unique_id=751198302]
+custom_minimum_size = Vector2(0, 10)
+custom_maximum_size = Vector2(-1, 10)
+layout_mode = 2
+
+[node name="NameContainer" type="HBoxContainer" parent="MainContainer/LeftContainer/BillContainer" unique_id=313658847]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/LeftContainer/BillContainer/NameContainer" unique_id=2074922319]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Name: "
+
+[node name="Name" type="LineEdit" parent="MainContainer/LeftContainer/BillContainer/NameContainer" unique_id=330870265]
+layout_mode = 2
+size_flags_horizontal = 3
+select_all_on_focus = true
+
+[node name="PriceContainer" type="HBoxContainer" parent="MainContainer/LeftContainer/BillContainer" unique_id=1192057001]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/LeftContainer/BillContainer/PriceContainer" unique_id=1445828676]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Total: "
+
+[node name="Price" type="SpinBox" parent="MainContainer/LeftContainer/BillContainer/PriceContainer" unique_id=1411117450]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1000000.0
+step = 0.01
+alignment = 2
+prefix = "Rs. "
+select_all_on_focus = true
+
+[node name="AddToList" type="Button" parent="MainContainer/LeftContainer/BillContainer" unique_id=1197202994]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_s6g8l")
+theme_override_styles/hover = SubResource("StyleBoxFlat_xgnml")
+text = "Add"
+
+[node name="DiscountContainer" type="HBoxContainer" parent="MainContainer/LeftContainer" unique_id=1644892632]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.94
+anchor_right = 0.99
+anchor_bottom = 0.99
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainContainer/LeftContainer/DiscountContainer" unique_id=479598645]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+text = "Discount: "
+
+[node name="Discount" type="SpinBox" parent="MainContainer/LeftContainer/DiscountContainer" unique_id=963816230]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -1000000.0
+max_value = 1000000.0
+step = 0.01
+alignment = 2
+update_on_text_changed = true
+prefix = "Rs. "
+select_all_on_focus = true
+
+[node name="ListContainer" type="Panel" parent="MainContainer" unique_id=2038298089]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Background" type="ColorRect" parent="MainContainer/ListContainer" unique_id=1424873696]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ListContainer" type="VBoxContainer" parent="MainContainer/ListContainer" unique_id=470102663]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.01
+anchor_right = 0.99
+anchor_bottom = 0.99
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BillList" parent="MainContainer/ListContainer/ListContainer" unique_id=337494581 instance=ExtResource("1_84vax")]
+layout_mode = 2
+bill_type = "service"
+
+[node name="PriceContainer" type="VBoxContainer" parent="MainContainer/ListContainer/ListContainer" unique_id=1010664092]
+layout_mode = 2
+
+[node name="SumTotalContainer" type="HBoxContainer" parent="MainContainer/ListContainer/ListContainer/PriceContainer" unique_id=853077498]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/ListContainer/ListContainer/PriceContainer/SumTotalContainer" unique_id=1725450076]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Sum Total: "
+
+[node name="SumTotal" type="SpinBox" parent="MainContainer/ListContainer/ListContainer/PriceContainer/SumTotalContainer" unique_id=363207702]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+max_value = 10000000.0
+step = 0.01
+alignment = 2
+editable = false
+prefix = "Rs. "
+
+[node name="NetTotalContainer" type="HBoxContainer" parent="MainContainer/ListContainer/ListContainer/PriceContainer" unique_id=1337671042]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/ListContainer/ListContainer/PriceContainer/NetTotalContainer" unique_id=829665708]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Net Total: "
+
+[node name="NetTotal" type="SpinBox" parent="MainContainer/ListContainer/ListContainer/PriceContainer/NetTotalContainer" unique_id=274621583]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+max_value = 10000000.0
+step = 0.01
+alignment = 2
+editable = false
+prefix = "Rs. "
+
+[node name="Seperator" type="Label" parent="MainContainer/ListContainer/ListContainer/PriceContainer/NetTotalContainer" unique_id=733521126]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+
+[node name="SaveToDB" type="Button" parent="MainContainer/ListContainer/ListContainer/PriceContainer/NetTotalContainer" unique_id=1843934435]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_84vax")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dl23f")
+text = "Save"
+
+[connection signal="pressed" from="MainContainer/LeftContainer/BillContainer/AddToList" to="." method="add_to_list"]
+[connection signal="value_changed" from="MainContainer/LeftContainer/DiscountContainer/Discount" to="." method="update_net_total"]
+[connection signal="list_updated" from="MainContainer/ListContainer/ListContainer/BillList" to="." method="update_sum_total"]
+[connection signal="pressed" from="MainContainer/ListContainer/ListContainer/PriceContainer/NetTotalContainer/SaveToDB" to="." method="save_to_db"]

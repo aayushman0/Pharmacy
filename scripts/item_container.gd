@@ -15,6 +15,10 @@ func _ready() -> void:
 	table.set_text(0, "Batch No.")
 	table.set_text(1, "Quantity")
 	table.set_text(2, "Expiry")
+	stock_table.set_column_expand(1, false)
+	stock_table.set_column_custom_minimum_width(1, 100)
+	stock_table.set_column_expand(2, false)
+	stock_table.set_column_custom_minimum_width(2, 100)
 	stock_table.visible = is_edit
 	refresh()
 
@@ -68,6 +72,8 @@ func refresh() -> void:
 		child.free()
 
 func refresh_edit(item_id: String) -> bool:
+	for child in table.get_children():
+		child.free()
 	Global.db.query("SELECT * FROM product WHERE id = " + item_id + ";")
 	if not Global.db.query_result:
 		return false
@@ -78,4 +84,10 @@ func refresh_edit(item_id: String) -> bool:
 	item_unit.set_value_no_signal(product.min_unit)
 	item_best_before.set_value_no_signal(product.best_before)
 	item_shelf.text = product.shelf
+	Global.db.query("SELECT * FROM batch WHERE product_id = " + item_id + ";")
+	for batch in Global.db.query_result:
+		var row: TreeItem = stock_table.create_item(table)
+		row.set_text(0, batch.batch_no)
+		row.set_text(1, str(batch.quantity))
+		row.set_text(2, batch.exp_date.substr(0, 7))
 	return true

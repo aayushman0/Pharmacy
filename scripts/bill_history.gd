@@ -5,6 +5,7 @@ extends Panel
 @onready var history_table: TreeItem = history.create_item()
 @onready var customer_name: LineEdit = $MainContainer/RightContainer/RightContainer/IDContainer/CustomerName
 @onready var bill_list: Tree = $MainContainer/RightContainer/RightContainer/BillList
+@onready var daily_total: SpinBox = $MainContainer/LeftContainer/DailyTotalContainer/DailyTotal
 @onready var bill_id: LineEdit = $MainContainer/RightContainer/RightContainer/IDContainer/BillID
 @onready var sum_total: SpinBox = $MainContainer/RightContainer/RightContainer/SumTotal/SumTotal
 @onready var net_total: SpinBox = $MainContainer/RightContainer/RightContainer/NetTotal/NetTotal
@@ -120,6 +121,7 @@ func refresh(_input: Variant = null) -> void:
 		child.free()
 	change_fiscal_year()
 	Global.db.query("SELECT * FROM " + bill_type + "_bill WHERE is_enabled = true AND DATE(bill_date) = '" + date_filter.get_date_str() + "' ORDER BY id DESC;")
+	var daily_total_calc: float = 0
 	for rows in Global.db.query_result:
 		var row: TreeItem = history.create_item(history_table)
 		row.set_text(0, str(rows.id - start_id))
@@ -128,6 +130,8 @@ func refresh(_input: Variant = null) -> void:
 		row.set_text(3, rows.bill_date.substr(11, 5))
 		row.set_text(4, str(rows.id))
 		Global.set_column_alignment(row, [0, 2, 3])
+		daily_total_calc += rows.net_amount
+	daily_total.set_value_no_signal(daily_total_calc)
 
 	customer_name.text = ""
 	bill_id.text = ""
