@@ -18,8 +18,8 @@ layout_mode = 2
 text = "Type: "
 
 [node name="TypeFilter" type="OptionButton" parent="FilterContainer" unique_id=1984820194]
-custom_minimum_size = Vector2(150, 0)
-custom_maximum_size = Vector2(150, -1)
+custom_minimum_size = Vector2(110, 0)
+custom_maximum_size = Vector2(110, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -55,12 +55,20 @@ text = "Name: "
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="DescriptionLabel" type="Label" parent="FilterContainer" unique_id=46928706]
+layout_mode = 2
+text = "Desc: "
+
+[node name="DescriptionFilter" type="LineEdit" parent="FilterContainer" unique_id=1883045041]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="ShelfLabel" type="Label" parent="FilterContainer" unique_id=78657752]
 layout_mode = 2
 text = "Shelf: "
 
 [node name="ShelfFilter" type="LineEdit" parent="FilterContainer" unique_id=1088469256]
-custom_maximum_size = Vector2(60, -1)
+custom_maximum_size = Vector2(40, -1)
 layout_mode = 2
 
 [node name="DistributorLabel" type="Label" parent="FilterContainer" unique_id=1980558462]
@@ -68,14 +76,13 @@ layout_mode = 2
 text = "Distributor: "
 
 [node name="DistributorFilter" type="LineEdit" parent="FilterContainer" unique_id=1698439131]
-custom_minimum_size = Vector2(100, 0)
-custom_maximum_size = Vector2(100, -1)
+custom_minimum_size = Vector2(70, 0)
+custom_maximum_size = Vector2(70, -1)
 layout_mode = 2
 
 [node name="QuantityFilter" type="CheckBox" parent="FilterContainer" unique_id=1585199236]
 layout_mode = 2
 layout_direction = 3
-text = ">"
 
 [node name="Table" type="Tree" parent="." unique_id=1068465050]
 layout_mode = 2
@@ -86,6 +93,7 @@ select_mode = 1
 
 [connection signal="item_selected" from="FilterContainer/TypeFilter" to="." method="refresh"]
 [connection signal="text_changed" from="FilterContainer/NameFilter" to="." method="refresh"]
+[connection signal="text_changed" from="FilterContainer/DescriptionFilter" to="." method="refresh"]
 [connection signal="text_changed" from="FilterContainer/ShelfFilter" to="." method="refresh"]
 [connection signal="text_changed" from="FilterContainer/DistributorFilter" to="." method="refresh"]
 [connection signal="pressed" from="FilterContainer/QuantityFilter" to="." method="refresh"]

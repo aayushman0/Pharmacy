@@ -3,6 +3,8 @@ extends VBoxContainer
 @export_enum("product", "batch") var table_name: String = "product"
 @onready var type_filter: OptionButton = $FilterContainer/TypeFilter
 @onready var name_filter: LineEdit = $FilterContainer/NameFilter
+@onready var description_label: Label = $FilterContainer/DescriptionLabel
+@onready var description_filter: LineEdit = $FilterContainer/DescriptionFilter
 @onready var shelf_filter: LineEdit = $FilterContainer/ShelfFilter
 @onready var distributor_label: Label = $FilterContainer/DistributorLabel
 @onready var distributor_filter: LineEdit = $FilterContainer/DistributorFilter
@@ -16,25 +18,30 @@ func _ready() -> void:
 		distributor_label.visible = false
 		distributor_filter.visible = false
 		quantity_filter.visible = false
-		main_table.columns = 6
+		main_table.columns = 7
 		table.set_text(0, "     ID")
 		table.set_text(1, "  Name")
 		table.set_text(2, "Type")
-		table.set_text(3, "Price/Unit ")
-		table.set_text_alignment(3, HORIZONTAL_ALIGNMENT_RIGHT)
-		table.set_text(4, " Best Before")
-		table.set_text(5, "Shelf")
+		table.set_text(3, "Description")
+		table.set_text(4, "Price/Unit ")
+		table.set_text_alignment(4, HORIZONTAL_ALIGNMENT_RIGHT)
+		table.set_text(5, " Months")
+		table.set_text(6, "Shelf")
 		main_table.set_column_expand(0, false)
 		main_table.set_column_custom_minimum_width(0, 60)
 		main_table.set_column_expand(2, false)
-		main_table.set_column_custom_minimum_width(2, 100)
+		main_table.set_column_custom_minimum_width(2, 80)
 		main_table.set_column_expand(3, false)
 		main_table.set_column_custom_minimum_width(3, 150)
 		main_table.set_column_expand(4, false)
-		main_table.set_column_custom_minimum_width(4, 100)
+		main_table.set_column_custom_minimum_width(4, 150)
 		main_table.set_column_expand(5, false)
-		main_table.set_column_custom_minimum_width(5, 100)
+		main_table.set_column_custom_minimum_width(5, 70)
+		main_table.set_column_expand(6, false)
+		main_table.set_column_custom_minimum_width(6, 50)
 	else:
+		description_label.visible = false
+		description_filter.visible = false
 		main_table.columns = 8
 		table.set_text(0, "     Name")
 		table.set_text(1, "Batch No.")
@@ -70,6 +77,8 @@ func refresh(_input: Variant = null) -> void:
 		filter_query.append("type = '" + type_filter.get_item_text(type_filter.selected) + "'")
 	if name_filter.text:
 		filter_query.append("code LIKE LOWER('%" + Global.alphanumeric(name_filter.text) + "%')")
+	if description_filter.text:
+		filter_query.append("LOWER(description) LIKE LOWER('%" + Global.alphanumeric(description_filter.text) + "%')")
 	if shelf_filter.text:
 		filter_query.append("LOWER(shelf) LIKE LOWER('%" + shelf_filter.text + "%')")
 	if distributor_filter.text:
@@ -92,10 +101,11 @@ func refresh(_input: Variant = null) -> void:
 			rows.set_text(0, str(row.id))
 			rows.set_text(1, "  " + row.name)
 			rows.set_text(2, row.type)
-			rows.set_text(3, "%.2f/%02d " % [row.price, row.min_unit])
-			rows.set_text(4, " " + str(row.best_before))
-			rows.set_text(5, row.shelf)
-			Global.set_column_alignment(rows, [0, 3])
+			rows.set_text(3, row.description if row.description else "")
+			rows.set_text(4, "%.2f/%02d " % [row.price, row.min_unit])
+			rows.set_text(5, " " + str(row.best_before))
+			rows.set_text(6, row.shelf)
+			Global.set_column_alignment(rows, [0, 4])
 		else:
 			rows.set_text(0, Global.product_types_dict.get(row.type, "---") + ". " + row.name)
 			rows.set_text(1, row.batch_no)

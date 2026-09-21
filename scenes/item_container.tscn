@@ -72,6 +72,18 @@ popup/item_8/id = 8
 popup/item_9/text = "Other"
 popup/item_9/id = 9
 
+[node name="DescriptionContainer" type="HBoxContainer" parent="." unique_id=959951234]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="DescriptionContainer" unique_id=1870275958]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Description: "
+
+[node name="Description" type="LineEdit" parent="DescriptionContainer" unique_id=1274081714]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="PriceContainer" type="HBoxContainer" parent="." unique_id=710986191]
 layout_mode = 2
 

@@ -3,6 +3,7 @@ extends VBoxContainer
 @export var is_edit: bool = false
 @onready var item_name: LineEdit = $NameContainer/Name
 @onready var item_type: OptionButton = $TypeContainer/Type
+@onready var item_description: LineEdit = $DescriptionContainer/Description
 @onready var item_price: SpinBox = $PriceContainer/Price
 @onready var item_unit: SpinBox = $PriceContainer/Unit
 @onready var item_best_before: SpinBox = $BestBeforeContainer/BestBefore
@@ -35,6 +36,7 @@ func save_to_db() -> void:
 		"name": item_name.text,
 		"type": item_type.get_item_text(item_type.selected),
 		"code": code,
+		"description": Global.alphanumeric(item_description.text),
 		"price": item_price.value,
 		"min_unit": item_unit.value,
 		"best_before": item_best_before.value,
@@ -55,6 +57,7 @@ func update_to_db(item_id: String) -> void:
 		"name": item_name.text,
 		"type": item_type.get_item_text(item_type.selected),
 		"code": code,
+		"description": Global.alphanumeric(item_description.text),
 		"price": item_price.value,
 		"min_unit": item_unit.value,
 		"best_before": item_best_before.value,
@@ -64,6 +67,7 @@ func update_to_db(item_id: String) -> void:
 func refresh() -> void:
 	item_name.text = ""
 	item_type.select(0)
+	item_description.text = ""
 	item_price.value = 0
 	item_unit.value = 1
 	item_best_before.value = 0
@@ -80,6 +84,7 @@ func refresh_edit(item_id: String) -> bool:
 	var product:Dictionary = Global.db.query_result[0]
 	item_name.text = product.name
 	item_type.select(Global.product_types_dict.keys().find(product.type))
+	item_description.text = product.description if product.description else ""
 	item_price.set_value_no_signal(product.price)
 	item_unit.set_value_no_signal(product.min_unit)
 	item_best_before.set_value_no_signal(product.best_before)

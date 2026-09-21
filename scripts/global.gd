@@ -48,6 +48,7 @@ func _ready() -> void:
 			name VARCHAR NOT NULL,
 			type VARCHAR NOT NULL,
 			code VARCHAR NOT NULL,
+			description VARCHAR,
 			price FLOAT,
 			min_unit INTEGER,
 			best_before INTEGER,
@@ -57,6 +58,7 @@ func _ready() -> void:
 	db.query("CREATE INDEX IF NOT EXISTS ix_product_name ON product (name);")
 	db.query("CREATE INDEX IF NOT EXISTS ix_product_type ON product (type);")
 	db.query("CREATE INDEX IF NOT EXISTS ix_product_code ON product (code);")
+	db.query("CREATE INDEX IF NOT EXISTS ix_product_description ON product (description);")
 	db.query("CREATE INDEX IF NOT EXISTS ix_product_shelf ON product (shelf);")
 
 	db.query(
