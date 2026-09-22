@@ -11,7 +11,9 @@ extends VBoxContainer
 @onready var quantity_filter: CheckBox = $FilterContainer/QuantityFilter
 @onready var main_table: Tree = $Table
 @onready var table: TreeItem = main_table.create_item()
-
+@onready var page_label: Label = $PageContainer/PageLabel
+var max_page: int = 1
+var current_page: int = 1
 
 func _ready() -> void:
 	if table_name == "product":
@@ -68,11 +70,24 @@ func _ready() -> void:
 		Global.set_column_alignment(table, [2, 3, 4, 5])
 	refresh()
 
-func refresh(_input: Variant = null) -> void:
+func _on_prev_button_pressed() -> void:
+	if current_page > 1:
+		current_page -= 1
+	refresh(null, true)
+
+func _on_next_button_pressed() -> void:
+	if current_page < max_page:
+		current_page += 1
+	refresh(null, true)
+
+func refresh(_input: Variant = null, page_change: bool = false) -> void:
 	for child in table.get_children():
 		child.free()
+	if not page_change:
+		current_page = 1
 	var filter_query: Array[String] = []
 	var filter_string: String = ""
+	var pagination_string: String = " LIMIT " + str(Global.row_count) + " OFFSET " + str((current_page - 1) * Global.row_count)
 	if type_filter.selected > 0:
 		filter_query.append("type = '" + type_filter.get_item_text(type_filter.selected) + "'")
 	if name_filter.text:
@@ -88,12 +103,13 @@ func refresh(_input: Variant = null) -> void:
 	if filter_query:
 		filter_string = "WHERE " + " AND ".join(filter_query)
 	if table_name == "product":
-		Global.db.query("SELECT * FROM product " + filter_string + " ORDER BY id DESC;")
+		Global.db.query("SELECT * FROM product " + filter_string + " ORDER BY id DESC" + pagination_string)
 	else:
 		Global.db.query(
 			"SELECT batch.*, product.name, product.type, product.min_unit, product.shelf FROM batch 
 			INNER JOIN product ON batch.product_id = product.id " + filter_string + 
-			(" ORDER BY batch.id DESC;" if quantity_filter.button_pressed else " ORDER BY exp_date;")
+			(" ORDER BY batch.id DESC" if quantity_filter.button_pressed else " ORDER BY exp_date") + 
+			pagination_string
 		)
 	for row in Global.db.query_result:
 		var rows: TreeItem = main_table.create_item(table)
@@ -120,3 +136,12 @@ func refresh(_input: Variant = null) -> void:
 			elif row.exp_date < Global.get_future_date(3):
 				rows.set_custom_color(4, Color.ORANGE)
 			Global.set_column_alignment(rows, [2, 3, 4, 5])
+	if table_name == "product":
+		Global.db.query("SELECT COUNT(id) as count FROM product " + filter_string)
+	else:
+		Global.db.query(
+			"SELECT COUNT(batch.id) as count FROM batch 
+			INNER JOIN product ON batch.product_id = product.id " + filter_string
+		)
+	max_page = (Global.db.query_result[0].count - 1) / Global.row_count + 1
+	page_label.text = "%02d/%02d" %[current_page, max_page]

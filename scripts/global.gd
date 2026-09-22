@@ -2,6 +2,7 @@ extends Node
 
 @onready var message_box: AcceptDialog = null
 
+var row_count: int = 100
 var regex = RegEx.new()
 var dt_now: Dictionary:
 	get:
