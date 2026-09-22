@@ -22,11 +22,12 @@ func set_inactive():
 
 func update_elements():
 	$Active.visible = active
+	if not active or not content:
+		return
 	for child in curr_content.get_children():
 		curr_content.remove_child(child)
 		child.queue_free()
-	if active and content:
-		curr_content.add_child(content.instantiate())
+	curr_content.add_child(content.instantiate())
 
 func _on_mouse_entered() -> void:
 	$Background.color = "#000000"

@@ -94,6 +94,9 @@ func _on_history_item_selected() -> void:
 		])
 
 func raise_confirmation() -> void:
+	if not bill_id.text:
+		Global.raise_alert("Please select a bill first!")
+		return
 	confirmation_dialog.popup_centered()
 
 func delete_from_db() -> void:
