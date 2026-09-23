@@ -10,6 +10,7 @@ extends VBoxContainer
 @onready var item_shelf: LineEdit = $ShelfContainer/Shelf
 @onready var stock_table: Tree = $StockTable
 @onready var table: TreeItem = stock_table.create_item()
+@onready var delete_button: Button = $DeleteFromDB
 
 
 func _ready() -> void:
@@ -21,6 +22,7 @@ func _ready() -> void:
 	stock_table.set_column_expand(2, false)
 	stock_table.set_column_custom_minimum_width(2, 100)
 	stock_table.visible = is_edit
+	delete_button.visible = is_edit
 	refresh()
 
 func save_to_db() -> void:
@@ -36,11 +38,12 @@ func save_to_db() -> void:
 		"name": item_name.text,
 		"type": item_type.get_item_text(item_type.selected),
 		"code": code,
-		"description": Global.alphanumeric(item_description.text),
+		"description": item_description.text,
 		"price": item_price.value,
 		"min_unit": item_unit.value,
 		"best_before": item_best_before.value,
 		"shelf": item_shelf.text,
+		"is_enabled": 1
 	})
 	refresh()
 
@@ -57,12 +60,15 @@ func update_to_db(item_id: String) -> void:
 		"name": item_name.text,
 		"type": item_type.get_item_text(item_type.selected),
 		"code": code,
-		"description": Global.alphanumeric(item_description.text),
+		"description": item_description.text,
 		"price": item_price.value,
 		"min_unit": item_unit.value,
 		"best_before": item_best_before.value,
 		"shelf": item_shelf.text, 
 	})
+
+func delete_from_db(item_id: String) -> void:
+	Global.db.query("UPDATE product SET is_enabled = NOT is_enabled WHERE id = " + item_id)
 
 func refresh() -> void:
 	item_name.text = ""

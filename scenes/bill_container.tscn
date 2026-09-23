@@ -48,7 +48,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(100, 0)
 custom_maximum_size = Vector2(100, -1)
 layout_mode = 2
-text = "Name: "
+text = "Particular: "
 
 [node name="Name" type="LineEdit" parent="NameContainer" unique_id=864058897]
 layout_mode = 2
@@ -156,6 +156,7 @@ max_value = 1000000.0
 step = 0.01
 alignment = 2
 prefix = "Rs. "
+select_all_on_focus = true
 
 [node name="AddToList" type="Button" parent="." unique_id=1935864596]
 layout_mode = 2

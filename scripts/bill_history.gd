@@ -82,9 +82,14 @@ func _on_history_item_selected() -> void:
 			 WHERE batch.id = " + entry_values[0]
 		)
 		if not Global.db.query_result:
-			Global.raise_alert("Internal Error!!! Batch not found!")
-			return
-		product = Global.db.query_result[0]
+			product = {
+				"type": "---",
+				"name": "Deleted",
+				"batch_no": "Deleted",
+				"exp_date": "20XX-XX-XX"
+			}
+		else:
+			product = Global.db.query_result[0]
 		bill_list.add_to_list([
 			Global.product_types_dict.get(product.type, "---") + ". " + product.name,
 			product.batch_no,

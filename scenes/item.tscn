@@ -210,10 +210,17 @@ is_edit = true
 [node name="ContainerAnimation" type="AnimationPlayer" parent="MainContainer" unique_id=829809415]
 libraries/ = SubResource("AnimationLibrary_s8enn")
 
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="." unique_id=623000836]
+ok_button_text = "Yes"
+dialog_text = "Are you sure you want to delete this item?"
+cancel_button_text = "No"
+
 [connection signal="pressed" from="MainContainer/LeftContainer/ItemContainer/SaveToDB" to="." method="save_to_db"]
 [connection signal="item_activated" from="MainContainer/ListContainer/ListContainer/Table" to="." method="_on_table_item_activated"]
 [connection signal="pressed" from="MainContainer/RightContainer/IDContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="MainContainer/RightContainer/ItemContainer/SaveToDB" to="." method="update_to_db"]
+[connection signal="pressed" from="MainContainer/RightContainer/ItemContainer/DeleteFromDB" to="." method="raise_confirmation"]
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="delete_from_db"]
 
 [editable path="MainContainer/LeftContainer/ItemContainer"]
 [editable path="MainContainer/ListContainer/ListContainer"]

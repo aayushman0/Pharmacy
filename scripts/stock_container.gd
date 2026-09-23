@@ -37,8 +37,8 @@ func update_choices(new_text: String) -> void:
 		drop_down_menu.hide()
 		return
 	Global.db.query(
-		"SELECT * FROM product where code LIKE LOWER('" + Global.alphanumeric(new_text) + "%')
-		 OR code LIKE LOWER('___" + Global.alphanumeric(new_text) + "%')
+		"SELECT * FROM product where (code LIKE LOWER('" + Global.alphanumeric(new_text) + "%')
+		 OR code LIKE LOWER('___" + Global.alphanumeric(new_text) + "%')) AND is_enabled = 1
 		 ORDER BY code LIMIT 7;"
 	)
 	drop_down_menu.popup(

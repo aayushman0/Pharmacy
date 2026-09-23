@@ -54,7 +54,7 @@ anchors_preset = -1
 anchor_left = 0.01
 anchor_top = 0.01
 anchor_right = 0.99
-anchor_bottom = 0.99
+anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 15
@@ -115,6 +115,32 @@ alignment = 2
 editable = false
 prefix = "Rs. "
 
+[node name="RemainingStockContainer" type="HBoxContainer" parent="MainContainer/LeftContainer" unique_id=1722892740]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.91
+anchor_right = 0.99
+anchor_bottom = 0.97
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainContainer/LeftContainer/RemainingStockContainer" unique_id=1975733571]
+custom_minimum_size = Vector2(150, 0)
+custom_maximum_size = Vector2(150, -1)
+layout_mode = 2
+text = "Remaining Stock: "
+
+[node name="RemainingStock" type="SpinBox" parent="MainContainer/LeftContainer/RemainingStockContainer" unique_id=1094102850]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 10000000.0
+step = 0.01
+alignment = 2
+editable = false
+prefix = "Rs. "
+
 [node name="RightContainer" type="Panel" parent="MainContainer" unique_id=872511018]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -127,5 +153,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="RightContainer" type="VBoxContainer" parent="MainContainer/RightContainer" unique_id=310928742]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.01
+anchor_right = 0.99
+anchor_bottom = 0.99
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="pressed" from="MainContainer/LeftContainer/FilterContainer/FilterButton" to="." method="refresh"]

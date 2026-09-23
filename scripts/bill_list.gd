@@ -8,7 +8,7 @@ signal list_updated(sum: float)
 
 func _ready() -> void:
 	if bill_type == "product":
-		table.set_text(0, "   Name")
+		table.set_text(0, "   Particular")
 		table.set_text(1, "Batch No.")
 		table.set_text(2, "Expiry  ")
 		table.set_text(3, "Qty ")
@@ -26,7 +26,7 @@ func _ready() -> void:
 		Global.set_column_alignment(table, [2, 3, 4])
 	else:
 		self.columns = 2
-		table.set_text(0, "    Name")
+		table.set_text(0, "    Service Name")
 		table.set_text(1, "Price    ")
 		Global.set_column_alignment(table, [1])
 

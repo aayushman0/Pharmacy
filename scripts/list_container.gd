@@ -19,7 +19,7 @@ func _ready() -> void:
 	if table_name == "product":
 		distributor_label.visible = false
 		distributor_filter.visible = false
-		quantity_filter.visible = false
+		#quantity_filter.visible = false
 		main_table.columns = 7
 		table.set_text(0, "     ID")
 		table.set_text(1, "  Name")
@@ -98,7 +98,9 @@ func refresh(_input: Variant = null, page_change: bool = false) -> void:
 		filter_query.append("LOWER(shelf) LIKE LOWER('%" + shelf_filter.text + "%')")
 	if distributor_filter.text:
 		filter_query.append("LOWER(distributor) LIKE LOWER('%" + distributor_filter.text + "%')")
-	if table_name == "batch":
+	if table_name == "product":
+		filter_query.append("is_enabled = 0" if quantity_filter.button_pressed else "is_enabled = 1")
+	else:
 		filter_query.append("quantity <= 0" if quantity_filter.button_pressed else "quantity > 0")
 	if filter_query:
 		filter_string = "WHERE " + " AND ".join(filter_query)

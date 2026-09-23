@@ -6,6 +6,7 @@ extends Panel
 @onready var item_table: Tree = $MainContainer/ListContainer/ListContainer/Table
 @onready var id_field: LineEdit = $MainContainer/RightContainer/IDContainer/IDField
 @onready var container_animation: AnimationPlayer = $MainContainer/ContainerAnimation
+@onready var confirmation_dialog: ConfirmationDialog = $ConfirmationDialog
 var edit_visible: bool
 
 func _ready() -> void:
@@ -19,6 +20,16 @@ func update_to_db() -> void:
 	if not id_field.text:
 		return
 	item_update.update_to_db(id_field.text)
+	item_list.refresh()
+
+func raise_confirmation() -> void:
+	if not id_field.text:
+		Global.raise_alert("Please select an Item first!")
+		return
+	confirmation_dialog.popup_centered()
+
+func delete_from_db() -> void:
+	item_update.delete_from_db(id_field.text)
 	item_list.refresh()
 
 func _on_table_item_activated() -> void:

@@ -53,7 +53,8 @@ func _ready() -> void:
 			price FLOAT,
 			min_unit INTEGER,
 			best_before INTEGER,
-			shelf VARCHAR
+			shelf VARCHAR,
+			is_enabled BOOLEAN DEFAULT 1
 		);"
 	)
 	db.query("CREATE INDEX IF NOT EXISTS ix_product_name ON product (name);")

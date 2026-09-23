@@ -4,6 +4,7 @@ extends Panel
 @onready var end_time: HBoxContainer = $MainContainer/LeftContainer/FilterContainer/EndTime
 @onready var product_income: SpinBox = $MainContainer/LeftContainer/FilterContainer/ProductIncomeContainer/ProductIncome
 @onready var service_income: SpinBox = $MainContainer/LeftContainer/FilterContainer/ServiceIncomeContainer/ServiceIncome
+@onready var remaining_stock: SpinBox = %RemainingStock
 
 
 func _ready() -> void:
@@ -24,3 +25,5 @@ func refresh() -> void:
 		end_time.get_date_str() + "';"
 	)
 	service_income.set_value_no_signal(Global.db.query_result[0].total)
+	Global.db.query("SELECT TOTAL(quantity * price) AS total FROM batch WHERE quantity > 0;")
+	remaining_stock.set_value_no_signal(Global.db.query_result[0].total)

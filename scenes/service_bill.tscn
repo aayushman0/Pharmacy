@@ -105,7 +105,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(100, 0)
 custom_maximum_size = Vector2(100, -1)
 layout_mode = 2
-text = "Name: "
+text = "Service: "
 
 [node name="Name" type="LineEdit" parent="MainContainer/LeftContainer/BillContainer/NameContainer" unique_id=330870265]
 layout_mode = 2
