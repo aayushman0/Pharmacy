@@ -43,6 +43,7 @@ text = "Name: "
 [node name="Name" type="LineEdit" parent="NameContainer" unique_id=1135685212]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_previous = NodePath("../../SaveToDB")
 
 [node name="TypeContainer" type="HBoxContainer" parent="." unique_id=1282301873]
 layout_mode = 2
@@ -149,6 +150,7 @@ size_flags_horizontal = 3
 
 [node name="SaveToDB" type="Button" parent="." unique_id=1601638284]
 layout_mode = 2
+focus_next = NodePath("../NameContainer/Name")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_n11ee")
 theme_override_styles/hover = SubResource("StyleBoxFlat_2umob")

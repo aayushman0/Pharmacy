@@ -110,6 +110,7 @@ text = "Service: "
 [node name="Name" type="LineEdit" parent="MainContainer/LeftContainer/BillContainer/NameContainer" unique_id=330870265]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_previous = NodePath("../../AddToList")
 select_all_on_focus = true
 
 [node name="PriceContainer" type="HBoxContainer" parent="MainContainer/LeftContainer/BillContainer" unique_id=1192057001]
@@ -132,6 +133,7 @@ select_all_on_focus = true
 
 [node name="AddToList" type="Button" parent="MainContainer/LeftContainer/BillContainer" unique_id=1197202994]
 layout_mode = 2
+focus_next = NodePath("../NameContainer/Name")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_s6g8l")
 theme_override_styles/hover = SubResource("StyleBoxFlat_xgnml")

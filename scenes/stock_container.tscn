@@ -39,6 +39,7 @@ text = "Name: "
 [node name="Name" type="LineEdit" parent="NameContainer" unique_id=1113736968]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_previous = NodePath("../../SaveToDB")
 select_all_on_focus = true
 
 [node name="DropDownMenu" type="PopupPanel" parent="NameContainer/Name" unique_id=1616662582]
@@ -147,6 +148,7 @@ size_flags_horizontal = 3
 
 [node name="SaveToDB" type="Button" parent="." unique_id=1754752472]
 layout_mode = 2
+focus_next = NodePath("../NameContainer/Name")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_w8fp2")
 theme_override_styles/hover = SubResource("StyleBoxFlat_s6ttn")

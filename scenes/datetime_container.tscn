@@ -36,6 +36,7 @@ select_all_on_focus = true
 [node name="Day" type="SpinBox" parent="." unique_id=26810060]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_behavior_recursive = 1
 theme = ExtResource("2_d50pn")
 min_value = 1.0
 max_value = 32.0
