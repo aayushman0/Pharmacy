@@ -25,7 +25,7 @@ func _ready() -> void:
 	history.set_column_expand(0, false)
 	history.set_column_custom_minimum_width(0, 60)
 	history.set_column_expand(2, false)
-	history.set_column_custom_minimum_width(2, 80)
+	history.set_column_custom_minimum_width(2, 90)
 	history.set_column_expand(3, false)
 	history.set_column_custom_minimum_width(3, 75)
 	history.set_column_expand(4, false)
@@ -77,7 +77,7 @@ func _on_history_item_selected() -> void:
 	for bill_entry in bill.bill.split(","):
 		entry_values = bill_entry.split(":")
 		Global.db.query(
-			"SELECT batch.*, product.name, product.type FROM batch
+			"SELECT batch.*, product.name, product.type, product.min_unit FROM batch
 			 INNER JOIN product ON batch.product_id = product.id
 			 WHERE batch.id = " + entry_values[0]
 		)
@@ -94,6 +94,7 @@ func _on_history_item_selected() -> void:
 			Global.product_types_dict.get(product.type, "---") + ". " + product.name,
 			product.batch_no,
 			product.exp_date.substr(0, 7),
+			"%.1f/%02d" %[product.price, product.min_unit],
 			entry_values[1],
 			entry_values[2],
 		])

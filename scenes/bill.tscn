@@ -134,7 +134,7 @@ text = "Sum Total: "
 [node name="SumTotal" type="SpinBox" parent="MainContainer/ListContainer/ListContainer/PriceContainer/SumTotalContainer" unique_id=463786419]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-max_value = 10000000.0
+max_value = 100000000.0
 step = 0.01
 alignment = 2
 editable = false
@@ -151,7 +151,7 @@ text = "Net Total: "
 [node name="NetTotal" type="SpinBox" parent="MainContainer/ListContainer/ListContainer/PriceContainer/NetTotal" unique_id=1909512882]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-max_value = 10000000.0
+max_value = 100000000.0
 step = 0.01
 alignment = 2
 editable = false

@@ -11,19 +11,22 @@ func _ready() -> void:
 		table.set_text(0, "   Particular")
 		table.set_text(1, "Batch No.")
 		table.set_text(2, "Expiry  ")
-		table.set_text(3, "Qty ")
-		table.set_text(4, "Total   ")
+		table.set_text(3, "Price  ")
+		table.set_text(4, "Qty ")
+		table.set_text(5, "Total   ")
 		self.set_column_expand(1, false)
-		self.set_column_custom_minimum_width(1, 170)
+		self.set_column_custom_minimum_width(1, 150)
 		self.set_column_expand(2, false)
 		self.set_column_custom_minimum_width(2, 75)
 		self.set_column_expand(3, false)
-		self.set_column_custom_minimum_width(3, 70)
+		self.set_column_custom_minimum_width(3, 90)
 		self.set_column_expand(4, false)
-		self.set_column_custom_minimum_width(4, 150)
+		self.set_column_custom_minimum_width(4, 70)
 		self.set_column_expand(5, false)
-		self.set_column_custom_minimum_width(5, 0)
-		Global.set_column_alignment(table, [2, 3, 4])
+		self.set_column_custom_minimum_width(5, 110)
+		self.set_column_expand(6, false)
+		self.set_column_custom_minimum_width(6, 0)
+		Global.set_column_alignment(table, [2, 3, 4, 5])
 	else:
 		self.columns = 2
 		table.set_text(0, "    Service Name")
@@ -35,7 +38,7 @@ func add_to_list(values: Array) -> void:
 	for i in range(values.size()):
 		table_item.set_text(i, values[i])
 	if bill_type == "product":
-		Global.set_column_alignment(table_item, [2, 3, 4])
+		Global.set_column_alignment(table_item, [2, 3, 4, 5])
 	else:
 		Global.set_column_alignment(table_item, [1])
 	get_sum_total()
@@ -52,7 +55,7 @@ func _on_item_activated() -> void:
 func get_sum_total() -> void:
 	var sum: float = 0
 	for child in table.get_children():
-		sum += float(child.get_text(4 if bill_type == "product" else 1))
+		sum += float(child.get_text(5 if bill_type == "product" else 1))
 	list_updated.emit(sum)
 
 func get_batches_from_list(product_name: String) -> Array[String]:
@@ -70,11 +73,11 @@ func get_bill_str() -> String:
 		return ",".join(bill_arr)
 
 	for row in table.get_children():
-		bill_arr.append(row.get_text(5) + ":" + row.get_text(3) + ":" + row.get_text(4))
+		bill_arr.append(row.get_text(6) + ":" + row.get_text(4) + ":" + row.get_text(5))
 		Global.db.query(
-			"UPDATE batch SET quantity = quantity - " + row.get_text(3) + ",
+			"UPDATE batch SET quantity = quantity - " + row.get_text(4) + ",
 			 created_at = '" + Global.dt_now_str + "'
-			 WHERE id = " + row.get_text(5)
+			 WHERE id = " + row.get_text(6)
 		)
 	return ",".join(bill_arr)
 

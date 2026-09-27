@@ -37,6 +37,13 @@ func get_dt_str() -> String:
 func get_date_str() -> String:
 	return "-".join([str(int(year.value)), double_digit(month.value), double_digit(day.value)])
 
+func get_date_dict() -> Dictionary[String, int]:
+	return {
+		"year": int(year.value),
+		"month": int(month.value),
+		"day": int(day.value)
+	}
+
 func update_datetime(dt_str: String) -> void:
 	var dt_arr: PackedStringArray = dt_str.split(" ")
 	year.value = float(dt_arr[0].split("-")[0])

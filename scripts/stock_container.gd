@@ -124,8 +124,11 @@ func save_to_db() -> void:
 			"created_at": Global.dt_now_str,
 			"product_id": prod_id,
 		})
+	var mfg_dict: Dictionary = mfg_container.get_date_dict()
+	var exp_dict: Dictionary = exp_container.get_date_dict()
 	Global.db.update_rows("product", "id = " + str(prod_id), {
-		"price": stock_price.value
+		"price": stock_price.value,
+		"best_before": (exp_dict.year * 12 + exp_dict.month) - (mfg_dict.year * 12 + mfg_dict.month)
 	})
 	refresh()
 
@@ -166,7 +169,6 @@ func refresh() -> void:
 	stock_unit.set_value_no_signal(0)
 	stock_price.set_value_no_signal(0)
 	mfg_container.update_date(Global.dt_now_str.substr(0, 7) + "-01")
-	stock_distributor.text = ""
 
 func refresh_edit(batch_id: String) -> bool:
 	Global.db.query("SELECT batch.*, product.name, product.type, product.min_unit, product.shelf FROM batch 

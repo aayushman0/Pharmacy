@@ -24,6 +24,7 @@ func add_to_list() -> void:
 		values.name,
 		values.batch_no,
 		Global.db.query_result[0].exp_date.substr(0, 7),
+		values.price,
 		str(values.quantity),
 		str(values.total),
 		str(Global.db.query_result[0].id)

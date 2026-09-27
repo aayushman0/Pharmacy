@@ -136,6 +136,7 @@ func send_values() -> Dictionary:
 		"name": stock_name.text,
 		"product_id": product_id,
 		"batch_no": stock_batch_no.get_item_text(stock_batch_no.selected),
+		"price": "%.1f/%02d" % [stock_price.value, stock_unit.value],
 		"quantity": int(stock_quantity.value),
 		"total": stock_total.value
 	}
