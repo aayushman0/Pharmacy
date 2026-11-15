@@ -145,47 +145,61 @@ func print_bill() -> void:
 		return
 	var bill: Dictionary = Global.db.query_result[0]
 	var bill_string: String = "\n"
-
-	if bill_type == "service":
-		return
 	var entry_values: PackedStringArray
 	var product: Dictionary
 	var particular: String
 	var batch_no: String
 	var sn: int = 1
-	for bill_entry in bill.bill.split(","):
-		entry_values = bill_entry.split(":")
-		Global.db.query(
-			"SELECT batch.*, product.name, product.type, product.min_unit FROM batch
-			 INNER JOIN product ON batch.product_id = product.id
-			 WHERE batch.id = " + entry_values[0]
-		)
-		if not Global.db.query_result:
-			product = {
-				"type": "---",
-				"name": "Deleted",
-				"batch_no": "Deleted",
-				"exp_date": "20XX-XX-XX"
-			}
-		else:
-			product = Global.db.query_result[0]
-		particular = Global.product_types_dict.get(product.type, "---") + ". " + product.name
-		if particular.length() < 10:
-			particular += "\t\t"
-		elif particular.length() < 16:
-			particular += "\t"
-		else:
-			particular = particular.substr(0, 15) + "\t"
-		batch_no = product.batch_no
-		if batch_no.length() < 7:
-			batch_no += "\t\t"
-		elif batch_no.length() < 12:
-			batch_no += "\t"
-		else:
-			batch_no = batch_no.substr(0, 11) + "\t"
-		bill_string += "%02d " % [sn] + particular + batch_no + product.exp_date.substr(5, 2) + "/" + product.exp_date.substr(2, 2) + "\t"
-		bill_string += entry_values[1].rpad(5) + "%.2f" % [product.price] + "\t" + entry_values[2].lpad(9) + "\n"
-		sn += 1
+	if bill_type == "service":
+		for bill_entry in bill.bill.split(","):
+			entry_values = bill_entry.split("::")
+			particular = entry_values[0]
+			if particular.length() < 10:
+				particular += "\t\t\t"
+			elif particular.length() < 16:
+				particular += "\t\t"
+			elif particular.length() < 24:
+				particular += "\t"
+			elif particular.length() < 30:
+				pass
+			else:
+				particular = particular.substr(0, 29)
+			bill_string += "%02d " % [sn] + particular + "\t\t\t\t" + entry_values[1].lpad(9) + "\n"
+			sn += 1
+	else:
+		for bill_entry in bill.bill.split(","):
+			entry_values = bill_entry.split(":")
+			Global.db.query(
+				"SELECT batch.*, product.name, product.type, product.min_unit FROM batch
+				 INNER JOIN product ON batch.product_id = product.id
+				 WHERE batch.id = " + entry_values[0]
+			)
+			if not Global.db.query_result:
+				product = {
+					"type": "---",
+					"name": "Deleted",
+					"batch_no": "Deleted",
+					"exp_date": "20XX-XX-XX"
+				}
+			else:
+				product = Global.db.query_result[0]
+			particular = Global.product_types_dict.get(product.type, "---") + ". " + product.name
+			if particular.length() < 10:
+				particular += "\t\t"
+			elif particular.length() < 16:
+				particular += "\t"
+			else:
+				particular = particular.substr(0, 15) + "\t"
+			batch_no = product.batch_no
+			if batch_no.length() < 7:
+				batch_no += "\t\t"
+			elif batch_no.length() < 12:
+				batch_no += "\t"
+			else:
+				batch_no = batch_no.substr(0, 11) + "\t"
+			bill_string += "%02d " % [sn] + particular + batch_no + product.exp_date.substr(5, 2) + "/" + product.exp_date.substr(2, 2) + "\t"
+			bill_string += entry_values[1].rpad(5) + "%.2f" % [product.price] + "\t" + entry_values[2].lpad(9) + "\n"
+			sn += 1
 	var argument_array: Array[String] = [
 		"print/print.py",
 		"product",
@@ -193,9 +207,9 @@ func print_bill() -> void:
 		bill.bill_date.substr(0, 10),
 		bill.name if bill.name else "---",
 		bill_string,
-		"%.2f" % [bill.total_amount],
-		"%.2f" % [bill.discount],
-		"%.2f" % [bill.net_amount],
+		"%8.2f" % [bill.total_amount],
+		"%8.2f" % [bill.discount],
+		"%8.2f" % [bill.net_amount],
 	]
 	OS.execute(python_path, argument_array)
 

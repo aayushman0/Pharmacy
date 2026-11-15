@@ -2,8 +2,8 @@ import sys, os
 from docx import Document
 
 
-bill_type: str = sys.argv[1]
-values: List = sys.argv[2:]
+bill_type = sys.argv[1]
+values = sys.argv[2:]
 document = Document("print/bill_sample.docx" if bill_type == "product" else "print/service_bill_sample.docx")
 replacement_dictionary = {
 	"[----]": values[0],
