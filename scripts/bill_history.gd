@@ -125,6 +125,72 @@ func delete_from_db() -> void:
 			)
 	refresh()
 
+func print_bill() -> void:
+	var python_path: String
+	if OS.get_name() == "Windows":
+		python_path = "print/venv/Scripts/python.exe"
+	else:
+		python_path = "print/venv/bin/python"
+	if not FileAccess.file_exists("res://" + python_path):
+		Global.raise_alert("Printing module not installed!")
+		return
+	Global.db.query("SELECT * FROM " + bill_type + "_bill WHERE id = " + bill_id.text)
+	if not Global.db.query_result:
+		Global.raise_alert("Bill not found!")
+		return
+	var bill: Dictionary = Global.db.query_result[0]
+	var bill_string: String = "\n"
+
+	if bill_type == "service":
+		return
+	var entry_values: PackedStringArray
+	var product: Dictionary
+	var particular: String
+	var batch_no: String
+	for bill_entry in bill.bill.split(","):
+		entry_values = bill_entry.split(":")
+		Global.db.query(
+			"SELECT batch.*, product.name, product.type, product.min_unit FROM batch
+			 INNER JOIN product ON batch.product_id = product.id
+			 WHERE batch.id = " + entry_values[0]
+		)
+		if not Global.db.query_result:
+			product = {
+				"type": "---",
+				"name": "Deleted",
+				"batch_no": "Deleted",
+				"exp_date": "20XX-XX-XX"
+			}
+		else:
+			product = Global.db.query_result[0]
+		particular = Global.product_types_dict.get(product.type, "---") + ". " + product.name
+		if particular.length() < 10:
+			particular += "\t\t"
+		elif particular.length() < 16:
+			particular += "\t"
+		else:
+			particular = particular.substr(0, 15) + "\t"
+		batch_no = product.batch_no
+		if batch_no.length() < 7:
+			batch_no += "\t\t"
+		elif batch_no.length() < 12:
+			batch_no += "\t"
+		else:
+			batch_no = batch_no.substr(0, 11) + "\t"
+		bill_string += particular + batch_no + product.exp_date.substr(5, 2) + "/" + product.exp_date.substr(2, 2) + "\t"
+		bill_string += entry_values[1].rpad(5) + "%.2f" % [product.price] + "\t" + entry_values[2].lpad(9)
+	var argument_array: Array[String] = [
+		"product",
+		str(bill.id - start_id),
+		bill.bill_date.substr(0, 10),
+		bill.name,
+		bill_string,
+		"%.2f" % [bill.total_amount],
+		"%.2f" % [bill.discount],
+		"%.2f" % [bill.net_amount],
+	]
+	OS.execute(python_path + " print/print.py", argument_array)
+
 func refresh(_input: Variant = null) -> void:
 	for child in history_table.get_children():
 		child.free()

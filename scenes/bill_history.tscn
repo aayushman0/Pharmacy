@@ -18,6 +18,20 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whljx"]
+bg_color = Color(0.2, 0.33333334, 0.8, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jn5nw"]
+bg_color = Color(0.26666668, 0.4, 0.8666667, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [node name="BillHistory" type="Panel" unique_id=969217790]
 anchors_preset = 15
 anchor_right = 1.0
@@ -183,6 +197,7 @@ editable = false
 prefix = "Rs. "
 
 [node name="Seperator" type="Label" parent="MainContainer/RightContainer/RightContainer/NetTotal" unique_id=1344698184]
+visible = false
 custom_minimum_size = Vector2(100, 0)
 custom_maximum_size = Vector2(100, -1)
 layout_mode = 2
@@ -194,6 +209,14 @@ theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_ljn0u")
 theme_override_styles/hover = SubResource("StyleBoxFlat_w8s4m")
 text = "Delete"
+
+[node name="PrintBill" type="Button" parent="MainContainer/RightContainer/RightContainer/NetTotal" unique_id=956008031]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_whljx")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jn5nw")
+text = "Print"
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="." unique_id=788457467]
 ok_button_text = "Yes"
@@ -207,6 +230,7 @@ cancel_button_text = "No"
 [connection signal="pressed" from="MainContainer/LeftContainer/FilterContainer/RightButton" to="." method="_on_right_button_pressed"]
 [connection signal="item_selected" from="MainContainer/LeftContainer/History" to="." method="_on_history_item_selected"]
 [connection signal="pressed" from="MainContainer/RightContainer/RightContainer/NetTotal/DeleteFromDB" to="." method="raise_confirmation"]
+[connection signal="pressed" from="MainContainer/RightContainer/RightContainer/NetTotal/PrintBill" to="." method="print_bill"]
 [connection signal="confirmed" from="ConfirmationDialog" to="." method="delete_from_db"]
 
 [editable path="MainContainer/LeftContainer/FilterContainer/DateFilter"]
