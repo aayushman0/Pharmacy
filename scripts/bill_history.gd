@@ -127,11 +127,16 @@ func delete_from_db() -> void:
 
 func print_bill() -> void:
 	var python_path: String
+	var full_path: String
 	if OS.get_name() == "Windows":
 		python_path = "print/venv/Scripts/python.exe"
 	else:
 		python_path = "print/venv/bin/python"
-	if not FileAccess.file_exists("res://" + python_path):
+	if OS.has_feature("editor"):
+		full_path = "res://" + python_path
+	else:
+		full_path = OS.get_executable_path().get_base_dir().path_join(python_path)
+	if not FileAccess.file_exists(full_path):
 		Global.raise_alert("Printing module not installed!")
 		return
 	Global.db.query("SELECT * FROM " + bill_type + "_bill WHERE id = " + bill_id.text)
@@ -147,6 +152,7 @@ func print_bill() -> void:
 	var product: Dictionary
 	var particular: String
 	var batch_no: String
+	var sn: int = 1
 	for bill_entry in bill.bill.split(","):
 		entry_values = bill_entry.split(":")
 		Global.db.query(
@@ -177,19 +183,21 @@ func print_bill() -> void:
 			batch_no += "\t"
 		else:
 			batch_no = batch_no.substr(0, 11) + "\t"
-		bill_string += particular + batch_no + product.exp_date.substr(5, 2) + "/" + product.exp_date.substr(2, 2) + "\t"
-		bill_string += entry_values[1].rpad(5) + "%.2f" % [product.price] + "\t" + entry_values[2].lpad(9)
+		bill_string += "%02d " % [sn] + particular + batch_no + product.exp_date.substr(5, 2) + "/" + product.exp_date.substr(2, 2) + "\t"
+		bill_string += entry_values[1].rpad(5) + "%.2f" % [product.price] + "\t" + entry_values[2].lpad(9) + "\n"
+		sn += 1
 	var argument_array: Array[String] = [
+		"print/print.py",
 		"product",
 		str(bill.id - start_id),
 		bill.bill_date.substr(0, 10),
-		bill.name,
+		bill.name if bill.name else "---",
 		bill_string,
 		"%.2f" % [bill.total_amount],
 		"%.2f" % [bill.discount],
 		"%.2f" % [bill.net_amount],
 	]
-	OS.execute(python_path + " print/print.py", argument_array)
+	OS.execute(python_path, argument_array)
 
 func refresh(_input: Variant = null) -> void:
 	for child in history_table.get_children():
