@@ -202,7 +202,7 @@ func print_bill() -> void:
 			sn += 1
 	var argument_array: Array[String] = [
 		"print/print.py",
-		"product",
+		bill_type,
 		str(bill.id - start_id),
 		bill.bill_date.substr(0, 10),
 		bill.name if bill.name else "---",
