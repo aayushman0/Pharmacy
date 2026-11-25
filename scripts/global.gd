@@ -114,6 +114,50 @@ func _ready() -> void:
 	)
 	db.query("CREATE INDEX IF NOT EXISTS ix_service_bill_bill_date ON service_bill (bill_date);")
 
+var _ones: Array[String] = [
+	"",
+	"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", 
+	"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"]
+var _tens: Array[String] = [
+	"", "", "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"
+]
+
+func number_to_word(num: int) -> String:
+	var output: String = ""
+	if num <= 0:
+		return "Zero"
+	if num >= 1000000000:
+		return "Value Exceeds Ten Digits"
+	if num >= 10000000:
+		@warning_ignore("integer_division")
+		output += tens_to_word(num / 10000000) + " Crore "
+		num = num % 10000000
+	if num >= 100000:
+		@warning_ignore("integer_division")
+		output += tens_to_word(num / 100000) + " Lakh "
+		num = num % 100000
+	if num >= 1000:
+		@warning_ignore("integer_division")
+		output += tens_to_word(num / 1000) + " Thousand "
+		num = num % 1000
+	if num >= 100:
+		@warning_ignore("integer_division")
+		output += tens_to_word(num / 100) + " Hundred "
+		num = num % 100
+	output += tens_to_word(num)
+	return output
+
+func tens_to_word(num: int) -> String:
+	var output: String = ""
+	if num > 19:
+		@warning_ignore("integer_division")
+		output += _tens[num / 10]
+		num = num % 10
+	if output and num:
+		output += " "
+	output += _ones[num]
+	return output
+
 func raise_alert(msg: String) -> void:
 	message_box.dialog_text = msg
 	message_box.popup_centered()

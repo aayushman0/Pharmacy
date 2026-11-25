@@ -13,6 +13,7 @@ replacement_dictionary = {
 	"[TTTTT.00]": values[4],
 	"[DDDDD.00]": values[5],
 	"[NNNNN.00]": values[6],
+	"[NET_AMOUNT]": values[7],
 }
 
 

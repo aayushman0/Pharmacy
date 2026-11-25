@@ -210,6 +210,7 @@ func print_bill() -> void:
 		"%8.2f" % [bill.total_amount],
 		"%8.2f" % [bill.discount],
 		"%8.2f" % [bill.net_amount],
+		Global.number_to_word(int(bill.net_amount))
 	]
 	OS.execute(python_path, argument_array)
 
